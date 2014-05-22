@@ -4,10 +4,6 @@ from django.db import models
 
 
 class Staff(models.Model):
-    """
-    Модель Staff, инкапсулирет ...
-    """
-
     name = models.CharField(max_length=50)
     unit = models.CharField(max_length=10)
 
