@@ -9,4 +9,4 @@ from models import Unit
 def index(request):
     unit_list = Unit.objects.all()
     context = {'unit_list': unit_list}
-    return render(request, 'quiz/index.html', context)
+    return render(request, 'quiz/unit.html', context)
