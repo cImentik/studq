@@ -1,0 +1,9 @@
+{% if unit_list %}
+    <ul>
+    {% for unit in unit_list %}
+        <li>{{ unit.name }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No units are available.</p>
+{% endif %}

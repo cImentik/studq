@@ -18,5 +18,5 @@ class QuestionAdmin(admin.ModelAdmin):
 
 admin.site.register(Unit)
 admin.site.register(Staff)
-#admin.site.register(Answer)
+admin.site.register(Answer)
 admin.site.register(Question, QuestionAdmin)
