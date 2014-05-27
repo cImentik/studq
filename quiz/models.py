@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.db import models
 
 # Create your models here.
@@ -13,6 +14,7 @@ class Unit(models.Model):
 class Staff(models.Model):
     name = models.CharField(max_length=50)
     unit = models.ForeignKey(Unit)
+    available = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.name
@@ -28,6 +30,35 @@ class Question(models.Model):
 class Answer(models.Model):
     content = models.TextField()
     question_id = models.ForeignKey(Question)
+    weight = models.IntegerField(default=0)
 
     def __unicode__(self):
         return self.content
+
+
+class QuizName(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __unicode__(self):
+        return self.name
+
+
+class Quiz(models.Model):
+    quiz_name_id = models.ForeignKey(QuizName)
+    staff_id = models.ForeignKey(Staff)
+    question_id = models.ForeignKey(Question)
+    result = models.FloatField(default=0.0)
+
+    def __unicode__(self):
+        return "Quiz"
+
+
+class Current(models.Model):
+    session_key = models.CharField(max_length=32)
+    staff_id = models.ForeignKey(Staff)
+    quiz_name_id = models.ForeignKey(QuizName)
+    question_id = models.ForeignKey(Question)
+    answer_id = models.ForeignKey(Answer)
+
+    def __unicode__(self):
+        return  "Current"
