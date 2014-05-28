@@ -1,0 +1,20 @@
+{% extends 'main.html' %}
+
+{% block quiz %}
+{% if staff_list %}
+    <ul>
+    {% for unit, staff_l in staff_list.items %}
+        <li>{{ unit }}</li>
+        {% for staff in staff_l %}
+            {% if staff.available %}
+                <p><a href="/">{{ staff.name }}</a> </p>
+            {% else %}
+                <p>{{ staff.name }}</p>
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No units are available.</p>
+{% endif %}
+{% endblock %}
