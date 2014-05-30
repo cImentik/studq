@@ -2,18 +2,18 @@
 
 {% block quiz %}
 {% if staff_list %}
-    <ul>
     {% for unit, staff_l in staff_list.items %}
-        <li>{{ unit }}</li>
+        {{ unit }}
+        <ul class="side-nav">
         {% for staff in staff_l %}
             {% if staff.available %}
-                <p><a href="/">{{ staff.name }}</a> </p>
+                <li><a href="{% url 'quiz' staff.id %}">{{ staff.name }}</a> </li>
             {% else %}
-                <p>{{ staff.name }}</p>
+                <li>{{ staff.name }}</li>
             {% endif %}
         {% endfor %}
+        </ul>
     {% endfor %}
-    </ul>
 {% else %}
     <p>No units are available.</p>
 {% endif %}
