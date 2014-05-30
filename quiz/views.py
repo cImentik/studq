@@ -23,7 +23,7 @@ def quiz(request, staff_id):
         raise Http404
     """
     staff = get_object_or_404(Staff, pk=staff_id)
-    if staff.available == True:
+    if staff.available:
         return render(request, 'quiz/quiz.html', {'staff': staff})
     else:
         raise Http404
