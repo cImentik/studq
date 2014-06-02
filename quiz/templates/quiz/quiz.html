@@ -3,5 +3,11 @@
 {% block quiz %}
 {% if staff %}
     {{ staff.name }}
+    </br>
+    {% if quiz %}
+        {% for q in quiz %}
+            {{ q.result }}
+        {% endfor %}
+    {% endif %}
 {% endif %}
 {% endblock %}

@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, Http404
 
-from models import Unit, Staff
+from models import Unit, Staff, Question, Answer, Quiz
 
 # Create your views here.
 
@@ -24,6 +24,10 @@ def quiz(request, staff_id):
     """
     staff = get_object_or_404(Staff, pk=staff_id)
     if staff.available:
-        return render(request, 'quiz/quiz.html', {'staff': staff})
+        #questions = Question
+        squiz = Quiz.objects.filter(staff_id=staff_id)
+        args = {'staff': staff,
+                'quiz': squiz}
+        return render(request, 'quiz/quiz.html', args)
     else:
         raise Http404
