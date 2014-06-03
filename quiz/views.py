@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, Http404
 from django.core.paginator import Paginator
@@ -17,7 +18,7 @@ def index(request):
 
 
 def quiz(request, staff_id, page_number=1):
-    #TODO: Ограничение на количество страниц
+    ##TODO: Ограничение на количество страниц
     staff = get_object_or_404(Staff, pk=staff_id)
     if staff.available:
         squiz = Quiz.objects.filter(staff_id=staff_id)
