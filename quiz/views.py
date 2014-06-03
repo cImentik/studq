@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, Http404
+from django.core.paginator import Paginator
 
 from models import Unit, Staff, Question, Answer, Quiz
 
@@ -15,19 +16,24 @@ def index(request):
     return render(request, 'quiz/index.html', context)
 
 
-def quiz(request, staff_id):
-    """
-    try:
-        staff = Staff.objects.get(pk=staff_id)
-    except Staff.DoesNotExist:
-        raise Http404
-    """
+def quiz(request, staff_id, page_number=1):
+    #TODO: Ограничение на количество страниц
     staff = get_object_or_404(Staff, pk=staff_id)
     if staff.available:
-        #questions = Question
         squiz = Quiz.objects.filter(staff_id=staff_id)
+        content = []
+        for q in squiz:
+            question = Question.objects.get(content=q.question_id)
+            answers = Answer.objects.filter(question_id=question.id)
+            pages = {'question': question.content,
+                     'answers': answers,
+                     }
+            content.append(pages)
+        current_page = Paginator(content, 1)
         args = {'staff': staff,
-                'quiz': squiz}
+                'quiz': squiz,
+                'content': current_page.page(page_number)}
+
         return render(request, 'quiz/quiz.html', args)
     else:
         raise Http404

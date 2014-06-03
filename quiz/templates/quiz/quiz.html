@@ -2,12 +2,40 @@
 
 {% block quiz %}
 {% if staff %}
-    {{ staff.name }}
+    Преподователь: {{ staff.name }}
     </br>
-    {% if quiz %}
-        {% for q in quiz %}
-            {{ q.result }}
+    </br>
+    {% if content %}
+        {% for c in content %}
+            <p>{{ c.question }}</p>
+            {% for a in c.answers %}
+                <p>{{ a.content }}</p>
+            {% endfor %}
         {% endfor %}
     {% endif %}
+
+    <div class="row">
+        <div class="large-3 large-offset-5 columns">
+            <ul class="pagination">
+                {% if content.has_previous %}
+                    <li class="arrow"><a href="/t/{{ staff.id }}/{{ content.previous_page_number }}/">&laquo;</a></li>
+                {% else %}
+                    <li class="arrow unavailable"><a href="">&laquo;</a></li>
+                {% endif %}
+                {% for page in content.paginator.page_range %}
+                    {% if page == content.number %}
+                        <li class="current"><a href="/t/{{ staff.id }}/{{ page }}/">{{ page }}</a></li>
+                    {% else %}
+                        <li><a href="/t/{{ staff.id }}/{{ page }}/">{{ page }}</a></li>
+                    {% endif %}
+                {% endfor %}
+                {% if content.has_next %}
+                    <li class="arrow"><a href="/t/{{ staff.id }}/{{ content.next_page_number }}/">&raquo;</a></li>
+                {% else %}
+                    <li class="arrow unavailable"><a href="">&raquo;</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
 {% endif %}
 {% endblock %}
