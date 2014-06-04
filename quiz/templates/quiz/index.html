@@ -7,7 +7,7 @@
         <ul class="side-nav">
         {% for staff in staff_l %}
             {% if staff.available %}
-                <li><a href="{% url 'quiz' staff.id %}">{{ staff.name }}</a> </li>
+                <li><a href="{% url 'quiz' staff.id 1 %}">{{ staff.name }}</a> </li>
             {% else %}
                 <li>{{ staff.name }}</li>
             {% endif %}

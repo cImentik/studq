@@ -34,7 +34,10 @@ def quiz(request, staff_id, page_number=1):
         args = {'staff': staff,
                 'quiz': squiz,
                 'content': current_page.page(page_number)}
-
         return render(request, 'quiz/quiz.html', args)
     else:
         raise Http404
+
+
+def forms(request):
+    pass
