@@ -39,6 +39,40 @@ def quiz(request, staff_id, page_number=1):
         raise Http404
 
 
-def forms(request):
+def forms(request, q_id):
+    """
+    p = get_object_or_404(Poll, pk=poll_id)
+    try:
+        selected_choice = p.choice_set.get(pk=request.POST['choice'])
+    except (KeyError, Choice.DoesNotExist):
+        # Redisplay the poll voting form.
+        return render(request, 'polls/detail.html', {
+            'poll': p,
+            'error_message': "You didn't select a choice.",
+        })
+    else:
+        selected_choice.votes += 1
+        selected_choice.save()
+        # Always return an HttpResponseRedirect after successfully dealing
+        # with POST data. This prevents data from being posted twice if a
+        # user hits the Back button.
+        return HttpResponseRedirect(reverse('polls:results', args=(p.id,)))
+    """
+    m = ''
     args = {}
-    return render(request, 'quiz/forms.html', args)
+    p = get_object_or_404(Question, pk=q_id)
+    try:
+        selected_choice = p.answer_set.get(pk=request.POST['choice'])
+    except (KeyError, Answer.DoesNotExist):
+        answers = Answer.objects.filter(question_id=q_id)
+        args = {'m': m,
+                'answers': answers
+        }
+        return render(request, 'quiz/forms.html', args)
+    else:
+        answers = Answer.objects.filter(question_id=q_id)
+        m = 'OK'
+        args = {'m': selected_choice,
+                'answers': answers
+        }
+        return render(request, 'quiz/forms.html', args)

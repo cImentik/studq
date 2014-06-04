@@ -1,9 +1,17 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title></title>
+    <title>Формы</title>
 </head>
 <body>
-    Hello
+    Вы выбрали:&nbsp;{{ selected_choice.content }}
+    <form action="{% url 'forms' 1 %}" method="post">
+    {% csrf_token %}
+    {% for answer in answers %}
+        <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ answer.id }}" />
+        <label for="choice{{ forloop.counter }}">{{ answer.content }}</label><br />
+    {% endfor %}
+    <input type="submit" value="Vote" />
+</form>
 </body>
 </html>
