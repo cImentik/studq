@@ -40,4 +40,5 @@ def quiz(request, staff_id, page_number=1):
 
 
 def forms(request):
-    pass
+    args = {}
+    return render(request, 'quiz/forms.html', args)
