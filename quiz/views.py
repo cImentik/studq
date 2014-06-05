@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.core.paginator import Paginator
+
+from quiz.forms import ContactForm, SimpleForm
 
 from models import Unit, Staff, Question, Answer, Quiz
 
@@ -40,24 +42,6 @@ def quiz(request, staff_id, page_number=1):
 
 
 def forms(request, q_id):
-    """
-    p = get_object_or_404(Poll, pk=poll_id)
-    try:
-        selected_choice = p.choice_set.get(pk=request.POST['choice'])
-    except (KeyError, Choice.DoesNotExist):
-        # Redisplay the poll voting form.
-        return render(request, 'polls/detail.html', {
-            'poll': p,
-            'error_message': "You didn't select a choice.",
-        })
-    else:
-        selected_choice.votes += 1
-        selected_choice.save()
-        # Always return an HttpResponseRedirect after successfully dealing
-        # with POST data. This prevents data from being posted twice if a
-        # user hits the Back button.
-        return HttpResponseRedirect(reverse('polls:results', args=(p.id,)))
-    """
     m = ''
     args = {}
     p = get_object_or_404(Question, pk=q_id)
@@ -76,3 +60,22 @@ def forms(request, q_id):
                 'answers': answers
         }
         return render(request, 'quiz/forms.html', args)
+
+
+def form(request):
+    m = ''
+    if request.method == 'POST': # If the form has been submitted...
+        form = SimpleForm(request.POST) # A form bound to the POST data
+        if form.is_valid(): # All validation rules pass
+            # Process the data in form.cleaned_data
+            # ...
+            #return HttpResponseRedirect('/form/') # Redirect after POST
+            return render(request, 'quiz/form.html', {'form': form})
+    else:
+        form = SimpleForm() # An unbound form
+    return render(request, 'quiz/form.html', {
+        'form': form,
+    })
+
+def jform(request):
+    return HttpResponse('I am alive...');
