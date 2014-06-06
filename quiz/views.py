@@ -51,7 +51,7 @@ def forms(request, q_id):
         answers = Answer.objects.filter(question_id=q_id)
         args = {'m': m,
                 'answers': answers
-        }
+                }
         return render(request, 'quiz/forms.html', args)
     else:
         answers = Answer.objects.filter(question_id=q_id)
@@ -77,5 +77,10 @@ def form(request):
         'form': form,
     })
 
+
 def jform(request):
-    return HttpResponse('I am alive...');
+    if request.is_ajax():
+        message = 'Hello world!'
+    else:
+        message = 'Hello'
+    return HttpResponse(message)

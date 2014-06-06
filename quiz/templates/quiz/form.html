@@ -1,5 +1,26 @@
+{% load staticfiles %}
+<script src="{% static "js/vendor/jquery.js" %}"></script>
 <form action="/form/" method="post">
 {% csrf_token %}
 {{ form }}
 <input type="submit" value="Submit" />
 </form>
+
+<script type="text/javascript">
+   $(function() {
+      $("#test").click(function() {
+         $.get("/jform/", function(data) {
+            alert(data);
+         });
+      });
+    });
+</script>
+
+<p><a id="test">Hello</a></p>
+
+<form action="" method="POST">
+{% csrf_token %}
+<input id="text-ajax" type="text" value="" />
+<input id="clickme" type="button" value="Кликни меня" />
+</form>
+
