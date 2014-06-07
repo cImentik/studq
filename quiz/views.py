@@ -2,6 +2,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.core.paginator import Paginator
+import json
 
 from quiz.forms import ContactForm, SimpleForm
 
@@ -84,3 +85,14 @@ def jform(request):
     else:
         message = 'Hello'
     return HttpResponse(message)
+
+
+def ajax_test(request):
+    #context = {}
+    try:
+        data = request.POST['text'].strip()
+    except:
+        context = '{ "new-text": "error" }'
+    else:
+        context = json.dumps({"new-text": data[::-1]})
+    return HttpResponse(context)

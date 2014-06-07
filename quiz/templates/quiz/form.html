@@ -1,5 +1,6 @@
 {% load staticfiles %}
 <script src="{% static "js/vendor/jquery.js" %}"></script>
+<script src="{% static "js/system.js" %}"></script>
 <form action="/form/" method="post">
 {% csrf_token %}
 {{ form }}
@@ -18,9 +19,22 @@
 
 <p><a id="test">Hello</a></p>
 
+<script type="text/javascript">
+$(function() {
+    $('#clickme').click(function () {
+	    $.post('/ajax/test/', {'text': $('#text-ajax').val()})
+         .done(function( data ) {
+                data = $.parseJSON(data);
+                $('#text-ajax').val(data['new-text']);
+         });
+    });
+})
+</script>
+
 <form action="" method="POST">
 {% csrf_token %}
 <input id="text-ajax" type="text" value="" />
 <input id="clickme" type="button" value="Кликни меня" />
 </form>
+
 
