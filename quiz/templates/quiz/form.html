@@ -1,32 +1,32 @@
 {% load staticfiles %}
 <script src="{% static "js/vendor/jquery.js" %}"></script>
 <script src="{% static "js/system.js" %}"></script>
-<form action="/form/" method="post">
+<form id="target" action="/form/" method="post">
 {% csrf_token %}
 {{ form }}
-<input type="submit" value="Submit" />
+<!-- <input type="submit" value="Submit" /> -->
 </form>
 
 <script type="text/javascript">
    $(function() {
-      $("#test").click(function() {
-         $.get("/jform/", function(data) {
-            alert(data);
-         });
+      $( "#other" ).click(function() {
+        $( "#target" ).submit();
       });
-    });
+   });
 </script>
 
+
 <p><a id="test">Hello</a></p>
+<p><a id="other">Not Hello</a></p>
 
 <script type="text/javascript">
 $(function() {
     $('#clickme').click(function () {
 	    $.post('/ajax/test/', {'text': $('#text-ajax').val()})
-         .done(function( data ) {
+            .done(function( data ) {
                 data = $.parseJSON(data);
                 $('#text-ajax').val(data['new-text']);
-         });
+            });
     });
 })
 </script>

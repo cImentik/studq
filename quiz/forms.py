@@ -8,7 +8,7 @@ FAVORITE_COLORS_CHOICES = (('blue', 'Blue'),
 
 
 class SimpleForm(forms.Form):
-    birth_year = forms.DateField(widget=SelectDateWidget(years=BIRTH_YEAR_CHOICES))
+    #birth_year = forms.DateField(widget=SelectDateWidget(years=BIRTH_YEAR_CHOICES))
     favorite_colors = forms.ChoiceField(required=False,
         widget=forms.RadioSelect, choices=FAVORITE_COLORS_CHOICES)
 
