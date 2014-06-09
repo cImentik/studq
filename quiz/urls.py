@@ -2,7 +2,7 @@ from django.conf.urls import patterns, url
 
 from quiz import views
 
-urlpatterns = patterns(
+urlpatterns = patterns('',
     url(r'^forms/(?P<q_id>\d+)/$', views.forms, name='forms'),
     url(r'^form/$', views.form, name='form'),
     url(r'^jform/$', views.jform, name='jform'),

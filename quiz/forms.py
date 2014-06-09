@@ -6,11 +6,14 @@ FAVORITE_COLORS_CHOICES = (('blue', 'Blue'),
                             ('green', 'Green'),
                             ('black', 'Black'))
 
-
+#choices=FAVORITE_COLORS_CHOICES
 class SimpleForm(forms.Form):
     #birth_year = forms.DateField(widget=SelectDateWidget(years=BIRTH_YEAR_CHOICES))
-    favorite_colors = forms.ChoiceField(required=False,
-        widget=forms.RadioSelect, choices=FAVORITE_COLORS_CHOICES)
+    favorite_colors = forms.ChoiceField(required=False, widget=forms.RadioSelect, choices=())
+
+    def __init__(self, *args, **kwargs):
+        super(SimpleForm, self).__init__(*args, **kwargs)
+        self.fields['favorite_colors'].choices = (('audio', 'Audio'), ('video', 'Video'))
 
 
 class ContactForm(forms.Form):
