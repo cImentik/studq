@@ -65,15 +65,17 @@ def forms(request, q_id):
 
 def form(request):
     m = ''
+    answers = Answer.objects.filter(question_id=1).values('content')
     if request.method == 'POST': # If the form has been submitted...
-        form = SimpleForm(request.POST) # A form bound to the POST data
+
+        form = SimpleForm(request.POST, an=answers) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
             # Process the data in form.cleaned_data
             # ...
             #return HttpResponseRedirect('/form/') # Redirect after POST
             return render(request, 'quiz/form.html', {'form': form})
     else:
-        form = SimpleForm() # An unbound form
+        form = SimpleForm({}, an=answers) # An unbound form
     return render(request, 'quiz/form.html', {
         'form': form,
     })

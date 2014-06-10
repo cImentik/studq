@@ -3,17 +3,19 @@ from django.forms.extras.widgets import SelectDateWidget
 
 BIRTH_YEAR_CHOICES = ('1980', '1981', '1982')
 FAVORITE_COLORS_CHOICES = (('blue', 'Blue'),
-                            ('green', 'Green'),
-                            ('black', 'Black'))
+                           ('green', 'Green'),
+                           ('black', 'Black'))
 
 #choices=FAVORITE_COLORS_CHOICES
 class SimpleForm(forms.Form):
     #birth_year = forms.DateField(widget=SelectDateWidget(years=BIRTH_YEAR_CHOICES))
-    favorite_colors = forms.ChoiceField(required=False, widget=forms.RadioSelect, choices=())
+    answers = forms.ChoiceField(label=u'Answers', required=False, widget=forms.RadioSelect, choices=())
 
     def __init__(self, *args, **kwargs):
+        #assert False
+        answers = kwargs.pop('an', None)
         super(SimpleForm, self).__init__(*args, **kwargs)
-        self.fields['favorite_colors'].choices = (('audio', 'Audio'), ('video', 'Video'))
+        self.fields['answers'].choices = {'content': u'\u0432\u0441\u0435\u0433\u0434\u0430'} #answers #(('audio', 'Audio'), ('video', 'Video'))
 
 
 class ContactForm(forms.Form):
