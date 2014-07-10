@@ -27,22 +27,13 @@ class Question(models.Model):
 
 class Answer(models.Model):
     content = models.TextField()
-    question_id = models.ForeignKey(Question)
     weight = models.IntegerField(default=0)
 
     def __unicode__(self):
         return self.content
 
 
-class QuizName(models.Model):
-    name = models.CharField(max_length=50)
-
-    def __unicode__(self):
-        return self.name
-
-
 class Quiz(models.Model):
-    quiz_name_id = models.ForeignKey(QuizName)
     staff_id = models.ForeignKey(Staff)
     question_id = models.ForeignKey(Question)
     result = models.FloatField(default=0.0)
@@ -54,7 +45,6 @@ class Quiz(models.Model):
 class Current(models.Model):
     session_key = models.CharField(max_length=32)
     staff_id = models.ForeignKey(Staff)
-    quiz_name_id = models.ForeignKey(QuizName)
     question_id = models.ForeignKey(Question)
     answer_id = models.ForeignKey(Answer)
 
