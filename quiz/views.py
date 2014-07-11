@@ -21,6 +21,7 @@ def index(request):
 
 
 def quiz(request, staff_id, page_number=1):
+    #assert False
     ##TODO: Ограничение на количество страниц
     staff = get_object_or_404(Staff, pk=staff_id)
     if staff.available:
