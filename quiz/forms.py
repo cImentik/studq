@@ -9,11 +9,14 @@ FAVORITE_COLORS_CHOICES = (('blue', 'Blue'),
 #choices=FAVORITE_COLORS_CHOICES
 class SimpleForm(forms.Form):
     #birth_year = forms.DateField(widget=SelectDateWidget(years=BIRTH_YEAR_CHOICES))
+    #mylabel = forms.CharField(widget=forms.CharField)
+    question_id = forms.CharField(required=False, widget=forms.HiddenInput)
     answers = forms.ChoiceField(label=u'Answers', required=False, widget=forms.RadioSelect)
 
     def __init__(self, *args, **kwargs):
 
         answers = kwargs.pop('an', None)
+        question = kwargs.pop('q', None)
         super(SimpleForm, self).__init__(*args, **kwargs)
         #d1 = dict(audio='Audio', video='Video', other='Other')
         #d2 = [('audio', 'Audio'), ('video', 'Video')]
@@ -23,6 +26,7 @@ class SimpleForm(forms.Form):
 
         #assert False
         self.fields['answers'].choices = answers #[('audio', 'Audio'), ('video', 'Video')]#{('audio', 'Audio'), ('video', 'Video')}
+        #self.fields['mylabel'] = question.content
 
 
 class ContactForm(forms.Form):

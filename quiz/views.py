@@ -25,9 +25,7 @@ def quiz(request, staff_id, page_number=1):
     # #TODO: Ограничение на количество страниц
     staff = get_object_or_404(Staff, pk=staff_id)
     if staff.available:
-        # = Quiz.objects.all()
         content = []
-        #for q in squiz:
         question = Question.objects.all()
         answers = Answer.objects.all()
         an = [] #answers tuple
@@ -45,42 +43,41 @@ def quiz(request, staff_id, page_number=1):
 
 
 def forms(request, q_id):
-    m = ''
-    args = {}
     q = get_object_or_404(Question, pk=q_id)
     try:
-        selected_choice = q.objects.get(pk=request.POST['choice'])
+        # assert False
+        selected_choice = Answer.objects.get(pk=request.POST['choice'])
     except (KeyError, Answer.DoesNotExist):
         answers = Answer.objects.all()
-        args = {'m': m,
+        args = {'question': q.content,
                 'answers': answers
         }
         return render(request, 'quiz/forms.html', args)
     else:
         answers = Answer.objects.all()
-        m = 'OK'
-        args = {'m': selected_choice,
+        args = {'question': q.content,
+                'm': selected_choice,
                 'answers': answers
         }
         return render(request, 'quiz/forms.html', args)
 
 
 def form(request):
-    m = ''
     an = []
-    answers = Answer.objects.filter(question_id=1)
+    question = Question.objects.filter(pk=1)
+    answers = Answer.objects.all()
     for ans in answers:
-        an.append((ans.content, ans.content))
+        an.append((ans.id, ans.content))
 
     if request.method == 'POST':  # If the form has been submitted...
-        form = SimpleForm(request.POST, an=an)  # A form bound to the POST data
+        form = SimpleForm(request.POST, an=an, q=question.id)  # A form bound to the POST data
         if form.is_valid():  # All validation rules pass
             # Process the data in form.cleaned_data
             # ...
             # return HttpResponseRedirect('/form/') # Redirect after POST
             return render(request, 'quiz/form.html', {'form': form})
     else:
-        form = SimpleForm({}, an=an)  # An unbound form
+        form = SimpleForm({}, an=an, q=question[0])  # An unbound form
     return render(request, 'quiz/form.html', {
         'form': form,
     })
