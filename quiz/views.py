@@ -21,22 +21,23 @@ def index(request):
 
 
 def quiz(request, staff_id, page_number=1):
-    #assert False
-    ##TODO: Ограничение на количество страниц
+    # assert False
+    # #TODO: Ограничение на количество страниц
     staff = get_object_or_404(Staff, pk=staff_id)
     if staff.available:
-        squiz = Quiz.objects.filter(staff_id=staff_id)
+        # = Quiz.objects.all()
         content = []
-        for q in squiz:
-            question = Question.objects.get(content=q.question_id)
-            answers = Answer.objects.filter(question_id=question.id)
-            pages = {'question': question.content,
-                     'answers': answers,
-                     }
+        #for q in squiz:
+        question = Question.objects.all()
+        answers = Answer.objects.all()
+        an = [] #answers tuple
+        for q in question:
+            pages = {'question': q.content,
+                     'answers': answers, }
             content.append(pages)
         current_page = Paginator(content, 1)
         args = {'staff': staff,
-                'quiz': squiz,
+                #'quiz': squiz,
                 'content': current_page.page(page_number)}
         return render(request, 'quiz/quiz.html', args)
     else:
@@ -46,17 +47,17 @@ def quiz(request, staff_id, page_number=1):
 def forms(request, q_id):
     m = ''
     args = {}
-    p = get_object_or_404(Question, pk=q_id)
+    q = get_object_or_404(Question, pk=q_id)
     try:
-        selected_choice = p.answer_set.get(pk=request.POST['choice'])
+        selected_choice = q.objects.get(pk=request.POST['choice'])
     except (KeyError, Answer.DoesNotExist):
-        answers = Answer.objects.filter(question_id=q_id)
+        answers = Answer.objects.all()
         args = {'m': m,
                 'answers': answers
-                }
+        }
         return render(request, 'quiz/forms.html', args)
     else:
-        answers = Answer.objects.filter(question_id=q_id)
+        answers = Answer.objects.all()
         m = 'OK'
         args = {'m': selected_choice,
                 'answers': answers
@@ -71,15 +72,15 @@ def form(request):
     for ans in answers:
         an.append((ans.content, ans.content))
 
-    if request.method == 'POST': # If the form has been submitted...
-        form = SimpleForm(request.POST, an=an) # A form bound to the POST data
-        if form.is_valid(): # All validation rules pass
+    if request.method == 'POST':  # If the form has been submitted...
+        form = SimpleForm(request.POST, an=an)  # A form bound to the POST data
+        if form.is_valid():  # All validation rules pass
             # Process the data in form.cleaned_data
             # ...
-            #return HttpResponseRedirect('/form/') # Redirect after POST
+            # return HttpResponseRedirect('/form/') # Redirect after POST
             return render(request, 'quiz/form.html', {'form': form})
     else:
-        form = SimpleForm({}, an=an) # An unbound form
+        form = SimpleForm({}, an=an)  # An unbound form
     return render(request, 'quiz/form.html', {
         'form': form,
     })
@@ -94,7 +95,7 @@ def jform(request):
 
 
 def ajax_test(request):
-    #context = {}
+    # context = {}
     try:
         data = request.POST['text'].strip()
     except:
