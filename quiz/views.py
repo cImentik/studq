@@ -4,7 +4,7 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.core.paginator import Paginator
 import json
 
-from quiz.forms import ContactForm, SimpleForm
+from quiz.forms import ContactForm, SimpleForm, CurrentForm
 
 from models import Unit, Staff, Question, Answer, Quiz
 
@@ -100,3 +100,12 @@ def ajax_test(request):
     else:
         context = json.dumps({"new-text": data[::-1]})
     return HttpResponse(context)
+
+def mform(request):
+    if request.method == 'POST':
+        mform = CurrentForm(request.POST)
+    else:
+        mform = CurrentForm();
+    return render(request, 'quiz/mform.html', {
+        'mform': mform,
+    })

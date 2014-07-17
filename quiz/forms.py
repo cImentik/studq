@@ -1,4 +1,5 @@
 from django import forms
+from quiz.models import Current
 from django.forms.extras.widgets import SelectDateWidget
 
 BIRTH_YEAR_CHOICES = ('1980', '1981', '1982')
@@ -34,4 +35,10 @@ class ContactForm(forms.Form):
     message = forms.CharField()
     sender = forms.EmailField()
     cc_myself = forms.BooleanField(required=False)
-    comment = forms.CharField(max_length=9,widget=forms.Textarea)
+    comment = forms.CharField(max_length=9, widget=forms.Textarea)
+
+
+class CurrentForm(forms.ModelForm):
+    class Meta:
+        model = Current
+        fields = ['session_key', 'staff_id', 'question_id', 'answer_id']

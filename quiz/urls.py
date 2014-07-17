@@ -9,4 +9,5 @@ urlpatterns = patterns('',
     url(r'^$', views.index, name='index'),
     url(r'^t/(?P<staff_id>\d+)/(?P<page_number>\d+)/$', views.quiz, name='quiz'),
     url(r'^ajax/test/$', views.ajax_test, name='ajax_test'),
+    url(r'^mform/$', views.mform, name='mform'),
 )
