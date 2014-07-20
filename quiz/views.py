@@ -6,7 +6,7 @@ import json
 
 from quiz.forms import ContactForm, SimpleForm, CurrentForm
 
-from models import Unit, Staff, Question, Answer, Quiz
+from models import Unit, Staff, Question, Answer, Quiz, Current
 
 # Create your views here.
 
@@ -101,11 +101,16 @@ def ajax_test(request):
         context = json.dumps({"new-text": data[::-1]})
     return HttpResponse(context)
 
-def mform(request):
+
+def mform(request, staff_id, page_number=1):
+    s = request.session.session_key
+    staff = Staff.objects.get(pk=staff_id)
+    question = Question.objects.get(pk=page_number)
+    current = Current(session_key=s, staff_id=staff, question_id=question)
     if request.method == 'POST':
-        mform = CurrentForm(request.POST)
+        mform = CurrentForm(request.POST, instance=current)
     else:
-        mform = CurrentForm();
+        mform = CurrentForm(instance=current)
     return render(request, 'quiz/mform.html', {
         'mform': mform,
     })

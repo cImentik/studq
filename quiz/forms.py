@@ -1,6 +1,11 @@
 from django import forms
-from quiz.models import Current
+from quiz.models import Current, Answer
 from django.forms.extras.widgets import SelectDateWidget
+
+GENDER_MALE = 0
+GENDER_FEMALE = 1
+CHOICES_GENDER = ((GENDER_MALE, "Male"),
+                  (GENDER_FEMALE, "Female"))
 
 BIRTH_YEAR_CHOICES = ('1980', '1981', '1982')
 FAVORITE_COLORS_CHOICES = (('blue', 'Blue'),
@@ -8,6 +13,8 @@ FAVORITE_COLORS_CHOICES = (('blue', 'Blue'),
                            ('black', 'Black'))
 
 #choices=FAVORITE_COLORS_CHOICES
+
+
 class SimpleForm(forms.Form):
     #birth_year = forms.DateField(widget=SelectDateWidget(years=BIRTH_YEAR_CHOICES))
     #mylabel = forms.CharField(widget=forms.CharField)
@@ -39,6 +46,22 @@ class ContactForm(forms.Form):
 
 
 class CurrentForm(forms.ModelForm):
+
+    # def __init__(self, *args, **kwargs):
+    #     session_key = kwargs.pop('snk', None)
+    #     question = kwargs.pop('q', None)
+    #     staff_id = kwargs.pop('s', None)
+    #     super(CurrentForm, self).__init__(*args, **kwargs)
+    #     self.fields['session_key'].initial = session_key
+    #     self.fields['question_id'].initial = question
+    #     self.fields['staff_id'].initial = staff_id
+
+    #answer_id = forms.ModelChoiceField(label='lol', queryset=Answer.objects.all(), widget=forms.RadioSelect())
+    #answer_id = forms.ModelChoiceField(widget=forms.RadioSelect(choices=Answer.objects.all()))
+    #answer_id = forms.ChoiceField(widget=forms.RadioSelect(choices=CHOICES_GENDER))
+
     class Meta:
         model = Current
-        fields = ['session_key', 'staff_id', 'question_id', 'answer_id']
+        #fields = ['session_key','question_id','staff_id','answer_id',]
+        fields = ['answer_id']
+        widgets = {'answer_id': forms.RadioSelect()}

@@ -46,7 +46,7 @@ class Current(models.Model):
     session_key = models.CharField(max_length=32)
     staff_id = models.ForeignKey(Staff)
     question_id = models.ForeignKey(Question)
-    answer_id = models.ForeignKey(Answer)
+    answer_id = models.ForeignKey(Answer, blank=False, default=1)
 
     def __unicode__(self):
         return  "Current"
