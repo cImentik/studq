@@ -108,9 +108,9 @@ def mform(request, staff_id, page_number=1):
     question = Question.objects.get(pk=page_number)
     current = Current(session_key=s, staff_id=staff, question_id=question)
     if request.method == 'POST':
-        mform = CurrentForm(request.POST, instance=current)
+        mform = CurrentForm(request.POST, instance=current, qc=question.content)
     else:
-        mform = CurrentForm(instance=current)
+        mform = CurrentForm(instance=current, qc=question.content)
     return render(request, 'quiz/mform.html', {
         'mform': mform,
     })

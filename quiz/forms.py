@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django import forms
 from quiz.models import Current, Answer
 from django.forms.extras.widgets import SelectDateWidget
@@ -47,8 +48,14 @@ class ContactForm(forms.Form):
 
 class CurrentForm(forms.ModelForm):
 
+    def __init__(self, *args, **kwargs):
+        question_name=kwargs.pop('qc', None)
+        super(CurrentForm, self).__init__(*args, **kwargs)
+        self.fields['answer_id'].label = question_name
+
     class Meta:
         model = Current
-        #fields = ['session_key','question_id','staff_id','answer_id',]
         fields = ['answer_id']
-        widgets = {'answer_id': forms.RadioSelect()}
+        widgets = {
+            'answer_id': forms.RadioSelect()
+        }
