@@ -47,19 +47,6 @@ class ContactForm(forms.Form):
 
 class CurrentForm(forms.ModelForm):
 
-    # def __init__(self, *args, **kwargs):
-    #     session_key = kwargs.pop('snk', None)
-    #     question = kwargs.pop('q', None)
-    #     staff_id = kwargs.pop('s', None)
-    #     super(CurrentForm, self).__init__(*args, **kwargs)
-    #     self.fields['session_key'].initial = session_key
-    #     self.fields['question_id'].initial = question
-    #     self.fields['staff_id'].initial = staff_id
-
-    #answer_id = forms.ModelChoiceField(label='lol', queryset=Answer.objects.all(), widget=forms.RadioSelect())
-    #answer_id = forms.ModelChoiceField(widget=forms.RadioSelect(choices=Answer.objects.all()))
-    #answer_id = forms.ChoiceField(widget=forms.RadioSelect(choices=CHOICES_GENDER))
-
     class Meta:
         model = Current
         #fields = ['session_key','question_id','staff_id','answer_id',]
