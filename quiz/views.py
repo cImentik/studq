@@ -106,9 +106,21 @@ def mform(request, staff_id, page_number=1):
     s = request.session.session_key
     staff = Staff.objects.get(pk=staff_id)
     question = Question.objects.get(pk=page_number)
-    current = Current(session_key=s, staff_id=staff, question_id=question)
+    try:
+        current = Current.objects.get(session_key=s, staff_id=staff, question_id=question)
+    except Current.DoesNotExist:
+        current = Current(session_key=s, staff_id=staff, question_id=question)
+    #lol = current.MultipleObjectsReturned
+    #assert False
+
     if request.method == 'POST':
         mform = CurrentForm(request.POST, instance=current, qc=question.content)
+        if mform.is_valid():
+            mform.save()
+        else:
+            return render(request, 'quiz/mform.html', {
+                'mform': mform,
+            })
     else:
         mform = CurrentForm(instance=current, qc=question.content)
     return render(request, 'quiz/mform.html', {

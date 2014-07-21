@@ -1,8 +1,8 @@
 {% load staticfiles %}
 {# <script src="{% static "js/vendor/jquery.js" %}"></script> #}
 {# <script src="{% static "js/system.js" %}"></script>  #}
-<form id="target" action="/mform/" method="post">
+<form id="target" action="" method="post">
 {% csrf_token %}
 {{ mform }}
-<!-- <input type="submit" value="Submit" /> -->
+<input type="submit" value="Submit" />
 </form>
