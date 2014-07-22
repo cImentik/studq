@@ -1,8 +1,62 @@
 {% load staticfiles %}
-{# <script src="{% static "js/vendor/jquery.js" %}"></script> #}
-{# <script src="{% static "js/system.js" %}"></script>  #}
-<form id="target" action="" method="post">
+{#<script src="{% static "js/vendor/jquery.js" %}"></script>#}
+<script src="{% static "js/foundation.min.js" %}"></script>
+<script src="{% static "js/system.js" %}"></script>
+{#{% extends 'main.html' %}#}
+
+{#{% block quiz %}#}
+<script type="text/javascript">
+    $('a#submit').click(function () {
+        alert('lolololololololol');
+        $('form#quiz') .submit();
+        return false;
+    });
+</script>
+<form id="quiz" action="" method="post">
 {% csrf_token %}
-{{ mform }}
-<input type="submit" value="Submit" />
+{#{{ mform }}#}
+{#<input type="submit" value="Submit" />#}
+{#<br/>#}
+{#    {% for i in con %}#}
+{#        <p>{{ i.sql }} ----- {{ i.time }}</p>#}
+{#    {% endfor %}#}
+    {% if content %}
+        {% for c in content %}
+            <table>
+                {{ c.form.as_table }}
+            </table>
+        {% endfor %}
+    {% endif %}
+
+<input type="submit" value="Submit"/>
 </form>
+{#    onclick="document.getElementById('quiz').submit(); return false;"#}
+    <div class="row">
+        <div class="large-10 small-offset-1 rows">
+            <ul class="pagination">
+                {% if content.has_previous %}
+                    <li class="arrow"><a id="submit" href="/mform/{{ staff.id }}/{{ content.previous_page_number }}/" >&laquo;</a></li>
+                {% else %}
+                    <li class="arrow unavailable"><a href="">&laquo;</a></li>
+                {% endif %}
+                {% for page in content.paginator.page_range %}
+                    {% if page == content.number %}
+                        <li class="current"><a id="submit" href="/mform/{{ staff.id }}/{{ page }}/">{{ page }}</a></li>
+                    {% else %}
+                        <li><a id="submit" href="/mform/{{ staff.id }}/{{ page }}/">{{ page }}</a></li>
+                    {% endif %}
+                {% endfor %}
+                {% if content.has_next %}
+                    <li class="arrow"><a id="submit" href="/mform/{{ staff.id }}/{{ content.next_page_number }}/">&raquo;</a></li>
+                {% else %}
+                    <li class="arrow unavailable"><a href="">&raquo;</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+<br/>
+{#    {% for i in con %}#}
+{#        <p>{{ i.sql }} ----- {{ i.time }}</p>#}
+{#    {% endfor %}#}
+
+{#{% endblock %}#}

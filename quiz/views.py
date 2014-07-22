@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.core.paginator import Paginator
 import json
+from django.db import connection
 
 from quiz.forms import ContactForm, SimpleForm, CurrentForm
 
@@ -106,23 +107,37 @@ def mform(request, staff_id, page_number=1):
     s = request.session.session_key
     staff = Staff.objects.get(pk=staff_id)
     question = Question.objects.get(pk=page_number)
+    content = []
     try:
         current = Current.objects.get(session_key=s, staff_id=staff, question_id=question)
     except Current.DoesNotExist:
         current = Current(session_key=s, staff_id=staff, question_id=question)
-    #lol = current.MultipleObjectsReturned
-    #assert False
-
     if request.method == 'POST':
         mform = CurrentForm(request.POST, instance=current, qc=question.content)
         if mform.is_valid():
             mform.save()
-        else:
-            return render(request, 'quiz/mform.html', {
-                'mform': mform,
-            })
+            # else:
+            #     return render(request, 'quiz/mform.html', {
+            #         'mform': mform,
+            #     })
     else:
         mform = CurrentForm(instance=current, qc=question.content)
+    questions = Question.objects.all()
+    for q in questions:
+    #lol = current.MultipleObjectsReturned
+    #assert False
+        try:
+            current = Current.objects.get(session_key=s, staff_id=staff, question_id=q)
+        except Current.DoesNotExist:
+            current = Current(session_key=s, staff_id=staff, question_id=q)
+        mform = CurrentForm(instance=current, qc=q.content)
+        page = {'form': mform}
+        content.append(page)
+    current_page = Paginator(content, 1)
+
     return render(request, 'quiz/mform.html', {
-        'mform': mform,
+        #'mform': mform,
+        'con': connection.queries,
+        'content': current_page.page(page_number),
+        'staff': staff
     })
