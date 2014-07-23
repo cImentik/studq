@@ -1,17 +1,18 @@
-{% load staticfiles %}
+{#{% load staticfiles %}#}
 {#<script src="{% static "js/vendor/jquery.js" %}"></script>#}
-<script src="{% static "js/foundation.min.js" %}"></script>
-<script src="{% static "js/system.js" %}"></script>
-{#{% extends 'main.html' %}#}
+{#<script src="{% static "js/foundation.min.js" %}"></script>#}
+{#<script src="{% static "js/system.js" %}"></script>#}
+{% extends 'main.html' %}
 
-{#{% block quiz %}#}
-<script type="text/javascript">
-    $('a#submit').click(function () {
-        alert('lolololololololol');
-        $('form#quiz') .submit();
-        return false;
-    });
-</script>
+{% block quiz %}
+{#<script type="text/javascript">#}
+{#    $('a#submit').click(function () {#}
+{#        alert('lolololololololol');#}
+{#        //$('form#quiz') .submit();#}
+{#        //return false;#}
+{#    });#}
+{#</script>#}
+
 <form id="quiz" action="" method="post">
 {% csrf_token %}
 {#{{ mform }}#}
@@ -30,6 +31,9 @@
 
 <input type="submit" value="Submit"/>
 </form>
+    <div class="large-1" id="lol">
+    trolololo
+    </div>
 {#    onclick="document.getElementById('quiz').submit(); return false;"#}
     <div class="row">
         <div class="large-10 small-offset-1 rows">
@@ -59,4 +63,4 @@
 {#        <p>{{ i.sql }} ----- {{ i.time }}</p>#}
 {#    {% endfor %}#}
 
-{#{% endblock %}#}
+{% endblock %}

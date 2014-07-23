@@ -7,8 +7,6 @@
     <title>Опросы</title>
     <link rel="stylesheet" type="text/css" href="{% static "css/normalize.css" %}">
     <link rel="stylesheet" type="text/css" href="{% static "css/foundation.css" %}">
-    <script src="{% static "js/vendor/jquery.js" %}"></script>
-    <script src="{% static "js/system.js" %}"></script>
     {#  <link rel="stylesheet" type="text/css" href="{% static "css/app.css" %}"> #}
 
 </head>
@@ -30,7 +28,6 @@
       	</div>
       </div>
     </div>
-</div>
 
 <footer class="row">
 <div class="large-12 columns">
@@ -47,12 +44,20 @@
 </div>
 </div>
 </footer>
-
     <script src="{% static "js/vendor/jquery.js" %}"></script>
     <script src="{% static "js/foundation.min.js" %}"></script>
     <script src="{% static "js/vendor/modernizr.js" %}"></script>
+{#    <script src="{% static "js/system.js" %}"></script>#}
     <script>
-      $(document).foundation();
+{#        jQuery.noConflict();#}
+        $(document).foundation();
+{#        $("a#submit").click(function(){#}
+{#            $("form#quiz").submit();#}
+{#            //alert(s);#}
+{#        });#}
+        $("div#lol").click(function(){
+            $("form#quiz").
+        });
     </script>
 </body>
 </html>
