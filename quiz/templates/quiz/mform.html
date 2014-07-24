@@ -29,29 +29,29 @@
         {% endfor %}
     {% endif %}
 
-<input type="submit" value="Submit"/>
+{#<input type="submit" value="Submit"/>#}
 </form>
-    <div class="large-1" id="lol">
-    trolololo
-    </div>
 {#    onclick="document.getElementById('quiz').submit(); return false;"#}
     <div class="row">
         <div class="large-10 small-offset-1 rows">
             <ul class="pagination">
                 {% if content.has_previous %}
-                    <li class="arrow"><a id="submit" href="/mform/{{ staff.id }}/{{ content.previous_page_number }}/" >&laquo;</a></li>
+                    <li class="arrow"><a id="fuck" href="/mform/{{ staff.id }}/{{ content.previous_page_number }}/"
+                            onclick="document.getElementById('quiz').submit(); return false;">
+                        &laquo;</a></li>
                 {% else %}
                     <li class="arrow unavailable"><a href="">&laquo;</a></li>
                 {% endif %}
                 {% for page in content.paginator.page_range %}
                     {% if page == content.number %}
-                        <li class="current"><a id="submit" href="/mform/{{ staff.id }}/{{ page }}/">{{ page }}</a></li>
+                        <li class="current"><a id="fuck" href="/mform/{{ staff.id }}/{{ page }}/">{{ page }}</a></li>
                     {% else %}
-                        <li><a id="submit" href="/mform/{{ staff.id }}/{{ page }}/">{{ page }}</a></li>
+                        <li><a id="fuck" href="/mform/{{ staff.id }}/{{ page }}/">{{ page }}</a></li>
                     {% endif %}
                 {% endfor %}
                 {% if content.has_next %}
-                    <li class="arrow"><a id="submit" href="/mform/{{ staff.id }}/{{ content.next_page_number }}/">&raquo;</a></li>
+                    <li class="arrow"><a id="fuck" href="/mform/{{ staff.id }}/{{ content.next_page_number }}/">
+                        &raquo;</a></li>
                 {% else %}
                     <li class="arrow unavailable"><a href="">&raquo;</a></li>
                 {% endif %}
@@ -59,6 +59,7 @@
         </div>
     </div>
 <br/>
+    <a id="fuck" href="#">ClickMe</a> {# /mform/1/4/   http://asu.krsk.irgups.ru/dekanat/#}
 {#    {% for i in con %}#}
 {#        <p>{{ i.sql }} ----- {{ i.time }}</p>#}
 {#    {% endfor %}#}
