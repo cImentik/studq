@@ -104,6 +104,8 @@ def ajax_test(request):
 
 
 def mform(request, staff_id, page_number=1):
+    if not request.session.exists(request.session.session_key):
+        request.session.create()
     s = request.session.session_key
     staff = Staff.objects.get(pk=staff_id)
     question = Question.objects.get(pk=page_number)

@@ -1,56 +1,52 @@
-{#{% load staticfiles %}#}
-{#<script src="{% static "js/vendor/jquery.js" %}"></script>#}
-{#<script src="{% static "js/foundation.min.js" %}"></script>#}
-{#<script src="{% static "js/system.js" %}"></script>#}
 {% extends 'main.html' %}
+{#{% load staticfiles %}#}
+{#<script src="{% static "js/works.js" %}"></script>#}
 
 {% block quiz %}
-{#<script type="text/javascript">#}
-{#    $('a#submit').click(function () {#}
-{#        alert('lolololololololol');#}
-{#        //$('form#quiz') .submit();#}
-{#        //return false;#}
-{#    });#}
-{#</script>#}
+<div class="row">
+    <span class="success label"> {{ staff.name }} </span>
+    <br/>
+    <form id="quiz" action="" method="post">
+    {% csrf_token %}
+    {#{{ mform }}#}
+        {% if content %}
+                {% for c in content %}
+                    {% for field in c.form %}
+                        <h3 class="subheader"> {{ field.label }} </h3>
+                        <br/>
+                        <div class="medium-1 columns"></div>
+                        <div class="medium-1 columns"></div>
+                        <div class="medium-5 columns">{{ field }}</div>
+                    {% endfor %}
+    {#                {{ c.form.as_p }}#}
+                {% endfor %}
+        {% endif %}
 
-<form id="quiz" action="" method="post">
-{% csrf_token %}
-{#{{ mform }}#}
-{#<input type="submit" value="Submit" />#}
-{#<br/>#}
-{#    {% for i in con %}#}
-{#        <p>{{ i.sql }} ----- {{ i.time }}</p>#}
-{#    {% endfor %}#}
-    {% if content %}
-        {% for c in content %}
-            <table>
-                {{ c.form.as_table }}
-            </table>
-        {% endfor %}
-    {% endif %}
-
-{#<input type="submit" value="Submit"/>#}
-</form>
+    </form>
+</div>
 {#    onclick="document.getElementById('quiz').submit(); return false;"#}
     <div class="row">
         <div class="large-10 small-offset-1 rows">
             <ul class="pagination">
                 {% if content.has_previous %}
                     <li class="arrow"><a id="fuck" href="/mform/{{ staff.id }}/{{ content.previous_page_number }}/"
-                            onclick="document.getElementById('quiz').submit(); return false;">
+                            onclick="document.getElementById('quiz').submit();return false;">
                         &laquo;</a></li>
                 {% else %}
                     <li class="arrow unavailable"><a href="">&laquo;</a></li>
                 {% endif %}
                 {% for page in content.paginator.page_range %}
                     {% if page == content.number %}
-                        <li class="current"><a id="fuck" href="/mform/{{ staff.id }}/{{ page }}/">{{ page }}</a></li>
+                        <li class="current"><a id="fuck" href="/mform/{{ staff.id }}/{{ page }}/"
+                                onclick="document.getElementById('quiz').submit(); return false;">{{ page }}</a></li>
                     {% else %}
-                        <li><a id="fuck" href="/mform/{{ staff.id }}/{{ page }}/">{{ page }}</a></li>
+                        <li><a id="fuck" href="/mform/{{ staff.id }}/{{ page }}/"
+                                onclick="document.getElementById('quiz').submit(); return false;">{{ page }}</a></li>
                     {% endif %}
                 {% endfor %}
                 {% if content.has_next %}
-                    <li class="arrow"><a id="fuck" href="/mform/{{ staff.id }}/{{ content.next_page_number }}/">
+                    <li class="arrow"><a id="fuck" href="/mform/{{ staff.id }}/{{ content.next_page_number }}/"
+                            onclick="document.getElementById('quiz').submit(); return false;">
                         &raquo;</a></li>
                 {% else %}
                     <li class="arrow unavailable"><a href="">&raquo;</a></li>
@@ -59,7 +55,6 @@
         </div>
     </div>
 <br/>
-    <a id="fuck" href="#">ClickMe</a> {# /mform/1/4/   http://asu.krsk.irgups.ru/dekanat/#}
 {#    {% for i in con %}#}
 {#        <p>{{ i.sql }} ----- {{ i.time }}</p>#}
 {#    {% endfor %}#}
