@@ -52,10 +52,12 @@
     <script>
 {#        jQuery.noConflict();#}
         $(document).foundation();
-{#        $("a#submit").click(function(){#}
-{#            $("form#quiz").submit();#}
-{#            //alert(s);#}
-{#        });#}
+        $(".pagination").click(function(e){
+            //$("form#quiz").submit();
+            //return false;
+            alert('');
+            return e;
+        });
 {#        $("form#quiz").submit(function(){#}
 {#            alert('I`am submit this form');#}
 {#            return false;//remove this line will submit request to server site.#}

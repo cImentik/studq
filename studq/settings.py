@@ -29,7 +29,7 @@ TEMPLATE_DIRS = (
 #    os.path.join(BASE_DIR, 'quiz/templates/'),
 )
 
-ALLOWED_HOSTS = ['127.0.0.1',]
+ALLOWED_HOSTS = []
 
 
 # Application definition

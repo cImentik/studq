@@ -5,5 +5,5 @@
 function ClickSubmit(element_id){
     //alert('');
     document.getElementById(element_id).submit();
-    return false;
+    return true;
 }
