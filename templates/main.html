@@ -46,29 +46,19 @@
 </footer>
     <script src="{% static "js/vendor/jquery.js" %}"></script>
     <script src="{% static "js/foundation.min.js" %}"></script>
-    <script src="{% static "js/vendor/modernizr.js" %}"></script>
+{#    <script src="{% static "js/vendor/modernizr.js" %}"></script>#}
     <script src="{% static "js/works.js" %}"></script>
-{#    <script src="{% static "js/system.js" %}"></script>#}
+    <script src="{% static "js/system.js" %}"></script>
     <script>
-{#        jQuery.noConflict();#}
+        //jQuery.noConflict();
         $(document).foundation();
-        $(".pagination").click(function(e){
-            //$("form#quiz").submit();
-            //return false;
-            alert('');
-            return e;
-        });
-{#        $("form#quiz").submit(function(){#}
-{#            alert('I`am submit this form');#}
-{#            return false;//remove this line will submit request to server site.#}
-{#        });#}
-{#        $("a#fuck").click(function(){#}
-{#            var f = $("form#quiz");#}
-{#            f.submit();#}
-{#            //return true;#}
-{#            //f[0].submit();#}
-{#            //console.log(f.submit);#}
-{#        });#}
+        $(".subheader").click(function(){
+            $.post('/ajax/test/', {'text': 'hello'})
+                .done(function( data ) {
+                    data = $.parseJSON(data);
+                    console.log(data['new-text']);
+            });
+        })
     </script>
 </body>
 </html>

@@ -29,8 +29,7 @@
         <div class="large-10 small-offset-1 rows" id="fuck">
             <ul class="pagination">
                 {% if content.has_previous %}
-                    <li class="arrow"><a href="/mform/{{ staff.id }}/{{ content.previous_page_number }}/"
-                            onclick="return ClickSubmit('quiz')">
+                    <li class="arrow"><a href="/mform/{{ staff.id }}/{{ content.previous_page_number }}/">
                         &laquo;</a></li>
                 {% else %}
                     <li class="arrow unavailable"><a href="">&laquo;</a></li>

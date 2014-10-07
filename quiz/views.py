@@ -103,6 +103,17 @@ def ajax_test(request):
     return HttpResponse(context)
 
 
+def ajax_test2(request):
+    # context = {}
+    try:
+        data = request.POST['text'].strip()
+    except:
+        context = '{ "new-text": "error" }'
+    else:
+        context = json.dumps({"new-text": data[::-1]})
+    return 0
+
+
 def mform(request, staff_id, page_number=1):
     if not request.session.exists(request.session.session_key):
         request.session.create()
@@ -138,7 +149,7 @@ def mform(request, staff_id, page_number=1):
     current_page = Paginator(content, 1)
 
     return render(request, 'quiz/mform.html', {
-        #'mform': mform,
+        'mform': mform,
         'con': connection.queries,
         'content': current_page.page(page_number),
         'staff': staff

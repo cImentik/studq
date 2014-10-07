@@ -4,6 +4,6 @@
 
 function ClickSubmit(element_id){
     //alert('');
-    document.getElementById(element_id).submit();
-    return true;
+    //document.getElementById(element_id).submit();
+    //return true;
 }
