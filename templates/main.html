@@ -53,10 +53,12 @@
         //jQuery.noConflict();
         $(document).foundation();
         $(".subheader").click(function(){
-            $.post('/ajax/test/', {'text': 'hello'})
+            $.post('/ajax/test2/', {'text': 'hello',
+                                    'form': $("#quiz").serialize()})
                 .done(function( data ) {
                     data = $.parseJSON(data);
                     console.log(data['new-text']);
+                    console.log(data['f']);
             });
         })
     </script>

@@ -105,13 +105,16 @@ def ajax_test(request):
 
 def ajax_test2(request):
     # context = {}
+    #assert False
     try:
+        d = json.loads(request.POST['form'])
         data = request.POST['text'].strip()
+        #f = request.POST['form']
     except:
         context = '{ "new-text": "error" }'
     else:
-        context = json.dumps({"new-text": data[::-1]})
-    return 0
+        context = json.dumps({"new-text": data[::-1], "f": d})
+    return HttpResponse(context)
 
 
 def mform(request, staff_id, page_number=1):
