@@ -4,52 +4,67 @@
 
 {% block quiz %}
 <div class="row">
-    <span class="success label"> {{ staff.name }} </span>
+    <span class="success label"> {{ staff_name }} </span>
     <br/>
+    <br/>
+    <br/>
+    {% if select_error %}
+        <div class="row">
+            <div class="large-10 large-offset-1 medium-10 medium-offset-1 small-10 small-offset-1 text-center column">
+                <div data-alert class="alert-box alert radius">
+                    Необходимо выбрать один из вариантов.
+                    <a href="#" class="close">&times;</a>
+                </div>
+            </div>
+        </div>
+    {% endif %}
     <form id="quiz" action="" method="post">
     {% csrf_token %}
     {#{{ mform }}#}
-        {% if content %}
-                {% for c in content %}
-                    {% for field in c.form %}
-                        <h3 class="subheader"> {{ field.label }} </h3>
+{#        {% if content %}#}
+{#                {% for c in content %}#}
+                    {% for field in mform %}
+                        <h3 class="subheader text-center"> {{ field.label }} </h3>
                         <br/>
-                        <div class="medium-1 columns"></div>
-                        <div class="medium-1 columns"></div>
-                        <div class="medium-5 columns">{{ field }}</div>
-                    {% endfor %}
+                        <div class="large-10 large-offset-1 medium-10 medium-offset-1 small-10 small-offset-1 columns">{{ field }}</div>
+{#                    {% endfor %}#}
     {#                {{ c.form.as_p }}#}
-                {% endfor %}
-        {% endif %}
-
+                    {% endfor %}
+{#        {% endif %}#}
+        <div class="row">
+            <div class="large-12 medium-12 small-12 column text-center">
+                <input type=submit class="button" value="Ответить">
+            </div>
+        </div>
     </form>
 </div>
+
 {#    onclick="document.getElementById('quiz').submit(); return false;"#}
-    <div class="row">
-        <div class="large-10 small-offset-1 rows" id="fuck">
-            <ul class="pagination">
-                {% if content.has_previous %}
-                    <li class="arrow"><a href="/mform/{{ staff.id }}/{{ content.previous_page_number }}/">
-                        &laquo;</a></li>
-                {% else %}
-                    <li class="arrow unavailable"><a href="">&laquo;</a></li>
-                {% endif %}
-                {% for page in content.paginator.page_range %}
-                    {% if page == content.number %}
-                        <li class="current"><a href="/mform/{{ staff.id }}/{{ page }}/">{{ page }}</a></li>
-                    {% else %}
-                        <li><a href="/mform/{{ staff.id }}/{{ page }}/">{{ page }}</a></li>
-                    {% endif %}
-                {% endfor %}
-                {% if content.has_next %}
-                    <li class="arrow"><a href="/mform/{{ staff.id }}/{{ content.next_page_number }}/">
-                        &raquo;</a></li>
-                {% else %}
-                    <li class="arrow unavailable"><a href="">&raquo;</a></li>
-                {% endif %}
-            </ul>
-        </div>
-    </div>
+{#    <div class="row">#}
+{#        <div class="large-10 small-offset-1 rows" id="fuck">#}
+{#            <ul class="pagination">#}
+{#                {% if content.has_previous %}#}
+{#                    <li class="arrow"><a href="/mform/{{ staff.id }}/{{ content.previous_page_number }}/">#}
+{#                        &laquo;</a></li>#}
+{#                {% else %}#}
+{#                    <li class="arrow unavailable"><a href="">&laquo;</a></li>#}
+{#                {% endif %}#}
+{#                {% for page in content.paginator.page_range %}#}
+{#                    {% if page == content.number %}#}
+{#                        <li class="current"><a href="/mform/{{ staff.id }}/{{ page }}/">{{ page }}</a></li>#}
+{#                    {% else %}#}
+{#                        <li><a href="/mform/{{ staff.id }}/{{ page }}/">{{ page }}</a></li>#}
+{#                    {% endif %}#}
+{#                {% endfor %}#}
+{#                {% if content.has_next %}#}
+{#                    <li class="arrow"><a href="/mform/{{ staff.id }}/{{ content.next_page_number }}/">#}
+{#                        &raquo;</a></li>#}
+{#                {% else %}#}
+{#                    <li class="arrow unavailable"><a href="">&raquo;</a></li>#}
+{#                {% endif %}#}
+{#            </ul>#}
+{#        </div>#}
+{#    </div>#}
 <br/>
 {#    {% for i in con %}#}
 {#        <p>{{ i.sql }} ----- {{ i.time }}</p>#}

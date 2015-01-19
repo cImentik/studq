@@ -5,9 +5,9 @@ from django.core.paginator import Paginator
 import json
 from django.db import connection
 
-from quiz.forms import ContactForm, SimpleForm, CurrentForm
+from .forms import ContactForm, SimpleForm, CurrentForm
 
-from models import Unit, Staff, Question, Answer, Quiz, Current
+from .models import Unit, Staff, Question, Answer, Quiz, Current
 
 # Create your views here.
 
@@ -117,13 +117,14 @@ def ajax_test2(request):
     return HttpResponse(context)
 
 
-def mform(request, staff_id, page_number=1):
+def mform(request, staff_id, question_id=1):
     if not request.session.exists(request.session.session_key):
         request.session.create()
     s = request.session.session_key
     staff = Staff.objects.get(pk=staff_id)
-    question = Question.objects.get(pk=page_number)
-    content = []
+    question = Question.objects.get(pk=question_id)
+    select_error = False
+    content = {}
     try:
         current = Current.objects.get(session_key=s, staff_id=staff, question_id=question)
     except Current.DoesNotExist:
@@ -132,28 +133,32 @@ def mform(request, staff_id, page_number=1):
         mform = CurrentForm(request.POST, instance=current, qc=question.content)
         if mform.is_valid():
             mform.save()
-            # else:
+        else:
+            select_error = True
             #     return render(request, 'quiz/mform.html', {
             #         'mform': mform,
             #     })
     else:
         mform = CurrentForm(instance=current, qc=question.content)
-    questions = Question.objects.all()
-    for q in questions:
+    #questions = Question.objects.all()
+    #for q in questions:
     #lol = current.MultipleObjectsReturned
     #assert False
-        try:
-            current = Current.objects.get(session_key=s, staff_id=staff, question_id=q)
-        except Current.DoesNotExist:
-            current = Current(session_key=s, staff_id=staff, question_id=q)
-        mform = CurrentForm(instance=current, qc=q.content)
-        page = {'form': mform}
-        content.append(page)
-    current_page = Paginator(content, 1)
+    # try:
+    #     current = Current.objects.get(session_key=s, staff_id=staff, question_id=question_id)
+    # except Current.DoesNotExist:
+    #     current = Current(session_key=s, staff_id=staff, question_id=question_id)
+    # mform = CurrentForm(instance=current, qc=question.content)
+    #page = {'form': mform}
+    #content.append(page)
+    #current_page = Paginator(content, 1)
+    # content = {'form': mform}
 
     return render(request, 'quiz/mform.html', {
         'mform': mform,
         'con': connection.queries,
-        'content': current_page.page(page_number),
-        'staff': staff
+        # 'content': current_page.page(page_number),
+        # 'content': content,
+        'staff_name': staff.name,
+        'select_error': select_error,
     })

@@ -49,7 +49,7 @@ class ContactForm(forms.Form):
 class CurrentForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
-        question_name=kwargs.pop('qc', None)
+        question_name = kwargs.pop('qc', None)
         super(CurrentForm, self).__init__(*args, **kwargs)
         self.fields['answer_id'].label = question_name
 
