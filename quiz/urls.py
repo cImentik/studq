@@ -11,4 +11,5 @@ urlpatterns = patterns('',
     url(r'^ajax/test/$', views.ajax_test, name='ajax_test'),
     url(r'^ajax/test2/$', views.ajax_test2, name='ajax_test2'),
     url(r'^mform/(?P<staff_id>\d+)/(?P<question_id>\d+)/$', views.mform, name='mform'),
+    url(r'^end/(?P<staff_id>\d+)/', views.end, name='end'),
 )

@@ -3,6 +3,8 @@
 {#<script src="{% static "js/works.js" %}"></script>#}
 
 {% block quiz %}
+
+{% if not end %}
 <div class="row">
     <span class="success label"> {{ staff_name }} </span>
     <br/>
@@ -20,17 +22,11 @@
     {% endif %}
     <form id="quiz" action="" method="post">
     {% csrf_token %}
-    {#{{ mform }}#}
-{#        {% if content %}#}
-{#                {% for c in content %}#}
-                    {% for field in mform %}
-                        <h3 class="subheader text-center"> {{ field.label }} </h3>
-                        <br/>
-                        <div class="large-10 large-offset-1 medium-10 medium-offset-1 small-10 small-offset-1 columns">{{ field }}</div>
-{#                    {% endfor %}#}
-    {#                {{ c.form.as_p }}#}
-                    {% endfor %}
-{#        {% endif %}#}
+        {% for field in mform %}
+            <h3 class="subheader text-center"> {{ field.label }} </h3>
+            <br/>
+            <div class="large-10 large-offset-1 medium-10 medium-offset-1 small-10 small-offset-1 columns">{{ field }}</div>
+        {% endfor %}
         <div class="row">
             <div class="large-12 medium-12 small-12 column text-center">
                 <input type=submit class="button" value="Ответить">
@@ -39,35 +35,28 @@
     </form>
 </div>
 
-{#    onclick="document.getElementById('quiz').submit(); return false;"#}
-{#    <div class="row">#}
-{#        <div class="large-10 small-offset-1 rows" id="fuck">#}
-{#            <ul class="pagination">#}
-{#                {% if content.has_previous %}#}
-{#                    <li class="arrow"><a href="/mform/{{ staff.id }}/{{ content.previous_page_number }}/">#}
-{#                        &laquo;</a></li>#}
-{#                {% else %}#}
-{#                    <li class="arrow unavailable"><a href="">&laquo;</a></li>#}
-{#                {% endif %}#}
-{#                {% for page in content.paginator.page_range %}#}
-{#                    {% if page == content.number %}#}
-{#                        <li class="current"><a href="/mform/{{ staff.id }}/{{ page }}/">{{ page }}</a></li>#}
-{#                    {% else %}#}
-{#                        <li><a href="/mform/{{ staff.id }}/{{ page }}/">{{ page }}</a></li>#}
-{#                    {% endif %}#}
-{#                {% endfor %}#}
-{#                {% if content.has_next %}#}
-{#                    <li class="arrow"><a href="/mform/{{ staff.id }}/{{ content.next_page_number }}/">#}
-{#                        &raquo;</a></li>#}
-{#                {% else %}#}
-{#                    <li class="arrow unavailable"><a href="">&raquo;</a></li>#}
-{#                {% endif %}#}
-{#            </ul>#}
-{#        </div>#}
-{#    </div>#}
-<br/>
-{#    {% for i in con %}#}
-{#        <p>{{ i.sql }} ----- {{ i.time }}</p>#}
-{#    {% endfor %}#}
-
+{% for c in con %}
+    {{ c.sql }}<br/>
+{% endfor %}
+{#<br/>#}
+{#<br/>#}
+{#    {{ currents_ids }}#}
+{#<br/>#}
+{#<br/>#}
+{#    {{ questions }}#}
+{#<br/>#}
+{#<br/>#}
+{#    {{ itog }}#}
+{#<br/>#}
+{#<br/>#}
+{#    {{ temp }}#}
+{% else %}
+    <div class="row">
+        <div class="large-10 large-offset-1 medium-10 medium-offset-1 small-10 small-offset-1 text-center column">
+            <p>
+                Вы завершили участие в тестировании. Спасибо.
+            </p>
+        </div>
+    </div>
+{% endif %}
 {% endblock %}
