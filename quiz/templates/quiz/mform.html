@@ -38,24 +38,15 @@
 {% for c in con %}
     {{ c.sql }}<br/>
 {% endfor %}
-{#<br/>#}
-{#<br/>#}
-{#    {{ currents_ids }}#}
-{#<br/>#}
-{#<br/>#}
-{#    {{ questions }}#}
-{#<br/>#}
-{#<br/>#}
-{#    {{ itog }}#}
-{#<br/>#}
-{#<br/>#}
-{#    {{ temp }}#}
 {% else %}
     <div class="row">
         <div class="large-10 large-offset-1 medium-10 medium-offset-1 small-10 small-offset-1 text-center column">
-            <p>
-                Вы завершили участие в тестировании. Спасибо.
-            </p>
+            <h4 class="subheader">Вы закончали своё участие в тестировании. Спасибо.</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-10 large-offset-1 medium-10 medium-offset-1 small-10 small-offset-1 text-center column">
+            <a href="{% url 'end'%}" class="button radius">Завершить</a>
         </div>
     </div>
 {% endif %}

@@ -1,0 +1,20 @@
+{% extends 'main.html' %}
+
+{% block quiz %}
+    <div class="row">
+        <div class="large-10 large-offset-1 medium-10 medium-offset-1 small-10 small-offset-1 column">
+            {% if staff_list %}
+                {% for unit, staff_l in staff_list.items %}
+                    {{ unit }}
+                    <ul>
+                    {% for staff in staff_l %}
+                        <li><a href="">{{ staff.name }}</a> </li>
+                    {% endfor %}
+                    </ul>
+                {% endfor %}
+            {% else %}
+                <p>Нет преподователей c достуаными отчётами</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
