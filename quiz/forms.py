@@ -51,11 +51,11 @@ class CurrentForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         question_name = kwargs.pop('qc', None)
         super(CurrentForm, self).__init__(*args, **kwargs)
-        self.fields['answer_id'].label = question_name
+        self.fields['answer'].label = question_name
 
     class Meta:
         model = Current
-        fields = ['answer_id']
+        fields = ['answer']
         widgets = {
-            'answer_id': forms.RadioSelect()
+            'answer': forms.RadioSelect()
         }

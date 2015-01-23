@@ -34,8 +34,8 @@ class Answer(models.Model):
 
 
 class Quiz(models.Model):
-    staff_id = models.ForeignKey(Staff)
-    question_id = models.ForeignKey(Question)
+    staff = models.ForeignKey(Staff)
+    question = models.ForeignKey(Question)
     result = models.FloatField(default=0.0)
 
     def __str__(self):
@@ -44,9 +44,9 @@ class Quiz(models.Model):
 
 class Current(models.Model):
     session_key = models.CharField(max_length=32)
-    staff_id = models.ForeignKey(Staff)
-    question_id = models.ForeignKey(Question)
-    answer_id = models.ForeignKey(Answer, blank=False, default=-1)
+    staff = models.ForeignKey(Staff)
+    question = models.ForeignKey(Question)
+    answer = models.ForeignKey(Answer, blank=False, default=-1)
 
     def __str__(self):
         return  "Current"

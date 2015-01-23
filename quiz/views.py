@@ -4,7 +4,7 @@ from django.http import HttpResponse, Http404
 from django.core.context_processors import csrf
 import json
 from django.db import connection
-from django.db.models import Avg, Max, Min, Count
+from django.db.models import Avg, Max, Min, Count, Sum
 from django.contrib.auth import logout
 
 from .forms import ContactForm, SimpleForm, CurrentForm
@@ -109,11 +109,11 @@ def quiz(request, staff_id, question_id=1):
     content.update(csrf(request))
 
     try:
-        current = Current.objects.get(session_key=s, staff_id=staff, question_id=question)
+        current = Current.objects.get(session_key=s, staff=staff, question=question)
     except Current.DoesNotExist:
-        current = Current(session_key=s, staff_id=staff, question_id=question)
+        current = Current(session_key=s, staff=staff, question=question)
 
-    currents_ids = list(Current.objects.filter(session_key=s, staff_id=staff).values_list('question_id', flat=True))
+    currents_ids = list(Current.objects.filter(session_key=s, staff=staff).values_list('question_id', flat=True))
     #currents_ids.append(question.id)
     questions_ids = Question.objects.all().exclude(pk__in=currents_ids).values_list('id', flat=True)
 
@@ -166,7 +166,8 @@ def reports(request):
 def report(request, staff_id):
     staff = get_object_or_404(Staff, pk=staff_id)
     questions = Question.objects.all().values_list('id', flat=True)
-    query = Current.objects.filter(question_id=1, staff_id=staff_id).distinct().annotate(Avg('answer_id'))
+    query = Current.objects.filter(staff_id=staff_id).annotate(Avg('answer'))
+    #query = Answer.objects.all()
     for question in questions:
         question_results = Current.objects.filter(question_id=question, staff_id=staff_id).distinct()
     content = {
