@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render, get_object_or_404, redirect, render_to_response
-from django.http import HttpResponse, Http404, HttpResponseRedirect
+from django.http import HttpResponse, Http404
 from django.core.context_processors import csrf
 import json
 from django.db import connection
+from django.db.models import Avg, Max, Min, Count
 from django.contrib.auth import logout
 
 from .forms import ContactForm, SimpleForm, CurrentForm
@@ -163,4 +164,13 @@ def reports(request):
 
 
 def report(request, staff_id):
-    return HttpResponse("Отчёт для преподователя %s" % staff_id)
+    staff = get_object_or_404(Staff, pk=staff_id)
+    questions = Question.objects.all().values_list('id', flat=True)
+    query = Current.objects.filter(question_id=1, staff_id=staff_id).distinct().annotate(Avg('answer_id'))
+    for question in questions:
+        question_results = Current.objects.filter(question_id=question, staff_id=staff_id).distinct()
+    content = {
+        'staff_name': staff.name,
+        'query': query.query,
+    }
+    return render_to_response('quiz/report.html', content)
