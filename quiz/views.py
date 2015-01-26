@@ -4,7 +4,7 @@ from django.http import HttpResponse, Http404
 from django.core.context_processors import csrf
 import json
 from django.db import connection
-from django.db.models import Avg, Max, Min, Count, Sum
+from django.db.models import Avg, Max, Min, Count, Sum, QuerySet
 from django.contrib.auth import logout
 
 from .forms import ContactForm, SimpleForm, CurrentForm
@@ -165,13 +165,39 @@ def reports(request):
 
 def report(request, staff_id):
     staff = get_object_or_404(Staff, pk=staff_id)
-    questions = Question.objects.all().values_list('id', flat=True)
-    query = Current.objects.filter(staff_id=staff_id).annotate(Avg('answer'))
+    questions = Question.objects.all().values('id', 'content')
+    answer_weights = Answer.objects.all().values_list('weight', flat=True)
     #query = Answer.objects.all()
+    data = {}
+    question_result = {}
     for question in questions:
-        question_results = Current.objects.filter(question_id=question, staff_id=staff_id).distinct()
+        results = Current.objects.filter(question_id=question['id'], staff_id=staff_id).values_list('answer__weight', flat=True)
+        data[question['id']] = {
+            'results': results,
+            'content': question['content'],
+            'frequency': frequency(answer_weights, results),
+            'mean': sum(results, 0)/len(results),
+            }
     content = {
         'staff_name': staff.name,
-        'query': query.query,
+        #'query': query.query,
+        #'res': results,
+        'data': data,
     }
     return render_to_response('quiz/report.html', content)
+
+
+def frequency(answer_weights, answers):
+    """Вычисление частоты - БЫДЛОКОД!!!!!!1111одынодын"""
+    data_dictionary = dict()
+    counter = 0
+    for weight in answer_weights:
+        if weight in answers:
+            for a in answers:
+                if a == weight:
+                    counter += 1
+        else:
+            counter = 0
+        data_dictionary[weight] = counter
+        counter = 0
+    return data_dictionary
