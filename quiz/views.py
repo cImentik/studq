@@ -169,6 +169,7 @@ def report(request, staff_id):
     answer_weights = Answer.objects.all().values_list('weight', flat=True)
     #query = Answer.objects.all()
     data = {}
+    q = connection
     question_result = {}
     for question in questions:
         results = Current.objects.filter(question_id=question['id'], staff_id=staff_id).values_list('answer__weight', flat=True)
@@ -176,13 +177,16 @@ def report(request, staff_id):
             'results': results,
             'content': question['content'],
             'frequency': frequency(answer_weights, results),
-            'mean': sum(results, 0)/len(results),
+            'mean': mean(results),
+            'std': std(results),
             }
     content = {
         'staff_name': staff.name,
+        'unit_name': staff.unit.name,
         #'query': query.query,
         #'res': results,
         'data': data,
+        'q': q,
     }
     return render_to_response('quiz/report.html', content)
 
@@ -201,3 +205,25 @@ def frequency(answer_weights, answers):
         data_dictionary[weight] = counter
         counter = 0
     return data_dictionary
+
+
+def mean(answers):
+    """Вычисление среднеарифмитичского значения"""
+    if len(answers) < 1:
+        result = 0
+    else:
+        result = round(sum(answers)/len(answers), 2)
+    return result
+
+
+def std(answers):
+    """Вычисление среднеквадратичного отклонения"""
+    m = mean(answers)
+    numerator = sum((x-m)**2 for x in answers)
+    l = len(answers)
+    if l < 2:
+        results = 0
+    else:
+        results = numerator/l
+        results = round((results**0.5), 2)
+    return results

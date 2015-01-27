@@ -1,12 +1,38 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html>
 <head lang="en">
     <meta charset="UTF-8">
     <title>Отчёт: {{ staff_name }}</title>
+    <link rel="stylesheet" type="text/css" href="{% static "css/normalize.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/foundation.css" %}">
 </head>
 <body>
-    {{ data }}
+<div class="row">
+    <div class="large-12 medium-12 small-12 text-center">
+        <br/>
+        <br/>
+        <p>Результат по всем вопросам теста "Преподователь глазами студента"</p>
+        <h4>{{ staff_name }}</h4>
+        <h6>Кафедра "{{ unit_name }}"</h6>
+        <hr/>
+    </div>
+</div>
+    {% for key, question in data.items %}
+        <div class="row text-center">Впрос №{{ key }}: {{ question.content }}</div>
+        <br/>
+        <div class="row">
+            <div class="large-6 medium-6 small-6 column">{{ question.frequency }}</div>
+            <div class="large-6 medium-6 small-6 column">
+            {{ question.mean }}<br/>
+            {{ question.results }}<br/>
+            {{ question.std }}<br/>
+            </div>
+            <hr/>
+        </div>
+    {% endfor %}
     <br/>
     <br/>
+{#    {{ q.queries }}#}
 </body>
 </html>

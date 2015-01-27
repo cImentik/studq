@@ -25,11 +25,13 @@
         {% for field in mform %}
             <h3 class="subheader text-center"> {{ field.label }} </h3>
             <br/>
+            <center>это качество проявляется:</center>
+{#            TODO: убрать быдлокод#}
             <div class="large-10 large-offset-1 medium-10 medium-offset-1 small-10 small-offset-1 columns">{{ field }}</div>
         {% endfor %}
         <div class="row">
             <div class="large-12 medium-12 small-12 column text-center">
-                <input type=submit class="button" value="Ответить">
+                <input type=submit class="button radius" value="Ответить">
             </div>
         </div>
     </form>
