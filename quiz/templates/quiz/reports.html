@@ -17,4 +17,13 @@
             {% endif %}
         </div>
     </div>
+
+
+    {{ query }}
+
+
+
+{% for c in q %}
+    {{ c.sql }}<br/>
+{% endfor %}
 {% endblock %}

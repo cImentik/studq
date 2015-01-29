@@ -157,13 +157,17 @@ def reports(request):
     is_user = False
     if user.is_authenticated():
         is_user = True
-    unit_list = Unit.objects.order_by("name")
+
+    unit_list = Unit.objects.all()
     staff_list = {}
+    query = Current.objects.select_related('staff')
     for unit in unit_list:
         staff_list[unit.name] = Staff.objects.filter(unit_id=unit.id).order_by("name")
     content = {
         'staff_list': staff_list,
         'is_user': is_user,
+        'q': connection.queries,
+        'query': query,
         }
     return render_to_response('quiz/reports.html', content)
 
