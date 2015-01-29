@@ -9,8 +9,6 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
-    #url(r'^quiz/', include('quiz.urls')),
-    #url(r'^t/', include('quiz.urls')),
     url(r'^accounts/login/$', 'django.contrib.auth.views.login', {"template_name": "accounts/login.html"}),
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout_then_login', name='logout'),
     url(r'^', include('quiz.urls')),

@@ -150,14 +150,23 @@ def end(request):
     response = redirect('/')
     return response
 
+
 @login_required
 def reports(request):
+    user = request.user
+    is_user = False
+    if user.is_authenticated():
+        is_user = True
     unit_list = Unit.objects.order_by("name")
     staff_list = {}
     for unit in unit_list:
         staff_list[unit.name] = Staff.objects.filter(unit_id=unit.id).order_by("name")
-    content = {'staff_list': staff_list}
+    content = {
+        'staff_list': staff_list,
+        'is_user': is_user,
+        }
     return render_to_response('quiz/reports.html', content)
+
 
 @login_required
 def report(request, staff_id):

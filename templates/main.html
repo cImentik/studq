@@ -7,15 +7,13 @@
     <title>Опросы</title>
     <link rel="stylesheet" type="text/css" href="{% static "css/normalize.css" %}">
     <link rel="stylesheet" type="text/css" href="{% static "css/foundation.css" %}">
-    {#  <link rel="stylesheet" type="text/css" href="{% static "css/app.css" %}"> #}
-
 </head>
 <body>
 <div class="row">
     <div class="large-12 columns">
     <div class="nav-bar right">
-        {% if user %}
-            <a href="{% url 'logout' %}" class="button">Выйти</a>
+        {% if is_user %}
+            <a href="{% url 'logout' %}" class="button">Выйти<br>{{ user }}</a>
         {% else %}
             <a href="{% url 'reports' %}" class="button">Получть результат</a>
         {% endif %}
@@ -50,21 +48,20 @@
 </footer>
     <script src="{% static "js/vendor/jquery.js" %}"></script>
     <script src="{% static "js/foundation.min.js" %}"></script>
-{#    <script src="{% static "js/vendor/modernizr.js" %}"></script>#}
     <script src="{% static "js/works.js" %}"></script>
     <script src="{% static "js/system.js" %}"></script>
     <script>
         //jQuery.noConflict();
         $(document).foundation();
-        $(".subheader").click(function(){
-            $.post('/ajax/test2/', {'text': 'hello',
-                                    'form': $("#quiz").serialize()})
-                .done(function( data ) {
-                    data = $.parseJSON(data);
-                    console.log(data['new-text']);
-                    console.log(data['f']);
-            });
-        })
+{#        $(".subheader").click(function(){#}
+{#            $.post('/ajax/test2/', {'text': 'hello',#}
+{#                                    'form': $("#quiz").serialize()})#}
+{#                .done(function( data ) {#}
+{#                    data = $.parseJSON(data);#}
+{#                    console.log(data['new-text']);#}
+{#                    console.log(data['f']);#}
+{#            });#}
+{#        })#}
     </script>
 </body>
 </html>
