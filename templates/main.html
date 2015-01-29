@@ -14,7 +14,11 @@
 <div class="row">
     <div class="large-12 columns">
     <div class="nav-bar right">
-            <a href="#" class="button">Получть результат</a>
+        {% if user %}
+            <a href="{% url 'logout' %}" class="button">Выйти</a>
+        {% else %}
+            <a href="{% url 'reports' %}" class="button">Получть результат</a>
+        {% endif %}
     </div>
         <h1>Преподаватель глазами студента</h1>
         <hr/>
@@ -38,7 +42,7 @@
 </div>
 <div class="large-6 columns">
 <ul class="inline-list right">
-<li><a href="#">Получить результат</a></li>
+<li><a href="#">Помощь</a></li>
 </ul>
 </div>
 </div>

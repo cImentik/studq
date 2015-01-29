@@ -8,7 +8,7 @@
                     {{ unit }}
                     <ul>
                     {% for staff in staff_l %}
-                        <li><a href="">{{ staff.name }}</a> </li>
+                        <li><a href="{% url 'report' staff.id %}" target="_blank">{{ staff.name }}</a> </li>
                     {% endfor %}
                     </ul>
                 {% endfor %}

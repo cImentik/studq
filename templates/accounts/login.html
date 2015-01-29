@@ -1,0 +1,27 @@
+{% extends 'main.html' %}
+
+{% block quiz %}
+    {% if form.errors %}
+         <div class="row">
+            <div class="large-10 large-offset-1 medium-10 medium-offset-1 small-10 small-offset-1 text-center column">
+                <div data-alert class="alert-box alert radius">
+                    Сожалеем, вы неправильно ввели логин или пароль
+{#                    <a href="#" class="close">&times;</a>#}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+<div class="row">
+    <div class="large-4 large-offset-4 medium-4 medium-offset-4 small-10 small-offset-1  text-center">
+        <form action='.' method='post'>
+            {% csrf_token %}
+            <label for="username">Логин:</label>
+            <input type="text" name="username" value="" id="username" placeholder="Введите логин">
+            <label for="password">Пароль:</label>
+            <input type="password" name="password" value="" id="password" placeholder="Введите пароль">
+            <input type="submit" class="button radius" value="Войти" />
+            <input type="hidden" name="next" value="{{ next|escape }}"/>
+        </form>
+    </div>
+</div>
+{% endblock %}

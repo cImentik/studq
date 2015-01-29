@@ -6,6 +6,7 @@ import json
 from django.db import connection
 from django.db.models import Avg, Max, Min, Count, Sum, QuerySet
 from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
 
 from .forms import ContactForm, SimpleForm, CurrentForm
 
@@ -50,12 +51,9 @@ def form(request):
     for ans in answers:
         an.append((ans.id, ans.content))
 
-    if request.method == 'POST':  # If the form has been submitted...
-        form = SimpleForm(request.POST, an=an, q=question.id)  # A form bound to the POST data
-        if form.is_valid():  # All validation rules pass
-            # Process the data in form.cleaned_data
-            # ...
-            # return HttpResponseRedirect('/form/') # Redirect after POST
+    if request.method == 'POST':
+        form = SimpleForm(request.POST, an=an, q=question.id)
+        if form.is_valid():
             return render(request, 'quiz/form.html', {'form': form})
     else:
         form = SimpleForm({}, an=an, q=question[0])  # An unbound form
@@ -114,7 +112,6 @@ def quiz(request, staff_id, question_id=1):
         current = Current(session_key=s, staff=staff, question=question)
 
     currents_ids = list(Current.objects.filter(session_key=s, staff=staff).values_list('question_id', flat=True))
-    #currents_ids.append(question.id)
     questions_ids = Question.objects.all().exclude(pk__in=currents_ids).values_list('id', flat=True)
 
     if len(questions_ids) > 0:
@@ -153,7 +150,7 @@ def end(request):
     response = redirect('/')
     return response
 
-
+@login_required
 def reports(request):
     unit_list = Unit.objects.order_by("name")
     staff_list = {}
@@ -162,7 +159,7 @@ def reports(request):
     content = {'staff_list': staff_list}
     return render_to_response('quiz/reports.html', content)
 
-
+@login_required
 def report(request, staff_id):
     staff = get_object_or_404(Staff, pk=staff_id)
     questions = Question.objects.all().values('id', 'content')
@@ -172,13 +169,19 @@ def report(request, staff_id):
     q = connection
     question_result = {}
     for question in questions:
-        results = Current.objects.filter(question_id=question['id'], staff_id=staff_id).values_list('answer__weight', flat=True)
+        results = Current.objects.filter(question_id=question['id'], staff_id=staff_id).values_list \
+            ('answer__weight', flat=True).order_by('answer__weight')
+        xaxis = frequency(answer_weights, results).keys()
+        yaxis = frequency(answer_weights, results).values()
         data[question['id']] = {
             'results': results,
             'content': question['content'],
             'frequency': frequency(answer_weights, results),
+            'xaxis': tuple(xaxis),
+            'yaxis': tuple(yaxis),
             'mean': mean(results),
             'std': std(results),
+            'median': median(results),
             }
     content = {
         'staff_name': staff.name,
@@ -227,3 +230,14 @@ def std(answers):
         results = numerator/l
         results = round((results**0.5), 2)
     return results
+
+
+def median(answers):
+    """Вычисление медианы"""
+    lenght = len(answers)
+    index = ((lenght-1) // 2)
+    if lenght % 2 == 0:
+        result = (answers[index]+answers[index+1])/2.0
+    else:
+        result = answers[index]
+    return  result

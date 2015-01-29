@@ -3,9 +3,18 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0"/>
     <title>Отчёт: {{ staff_name }}</title>
-    <link rel="stylesheet" type="text/css" href="{% static "css/normalize.css" %}">
-    <link rel="stylesheet" type="text/css" href="{% static "css/foundation.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/normalize.css" %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static "css/foundation.css" %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static "css/jquery.jqplot.min.css" %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static "css/app.css" %}"/>
+
+    <script type="text/javascript" src="{% static "js/vendor/jquery.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/vendor/jquery.jqplot.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/vendor/jqplugins/jqplot.barRenderer.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/vendor/jqplugins/jqplot.categoryAxisRenderer.min.js" %}"></script>
+
 </head>
 <body>
 <div class="row">
@@ -18,21 +27,65 @@
         <hr/>
     </div>
 </div>
+<div class="row">
     {% for key, question in data.items %}
         <div class="row text-center">Впрос №{{ key }}: {{ question.content }}</div>
         <br/>
         <div class="row">
-            <div class="large-6 medium-6 small-6 column">{{ question.frequency }}</div>
-            <div class="large-6 medium-6 small-6 column">
-            {{ question.mean }}<br/>
-            {{ question.results }}<br/>
-            {{ question.std }}<br/>
+            <div id="chart{{ key }}" class="large-6 medium-5 small-6 column">
+                    <script class="code" type="text/javascript">$(document).ready(function(){
+                        $.jqplot.config.enablePlugins = true;
+                        var y = [{%for y in question.yaxis %} {{ y }}, {% endfor %}];
+                        var ticks = [{%for t in question.xaxis %} {{ t }}, {% endfor %}];
+                        plot1 = $.jqplot('chart{{ key }}', [y], {
+                            // Only animate if we're not using excanvas (not in IE 7 or IE 8)..
+{#                            animate: !$.jqplot.use_excanvas,#}
+                            seriesDefaults:{
+                                renderer:$.jqplot.BarRenderer
+                            },
+                            axes: {
+                                xaxis: {
+                                    renderer: $.jqplot.CategoryAxisRenderer,
+                                    ticks: ticks
+                                }
+                            }
+                        });
+                    });</script>
+{#                {{ question.frequency }}<br/>#}
+{#                {{ question.xaxis }}<br/>#}
+{#                {{ question.yaxis }}<br/>#}
+
             </div>
-            <hr/>
+            <div class="large-6 medium-5 small-6 column text-center">
+                <br/>
+                <div class="large-offset-1 medium-offset-1 small-offset-1">
+                    <table>
+                    <tbody>
+                        <tr>
+                            <td>Среднее зачение (вес)</td>
+                            <td>{{ question.mean }}</td>
+                        </tr>
+                        <tr>
+                            <td>СКО (вес)</td>
+                            <td>{{ question.std }}</td>
+                        </tr>
+                        <tr>
+                            <td>Медиана (вес)</td>
+                            <td>{{ question.median}}</td>
+                        </tr>
+                    </tbody>
+                    </table>
+                </div>
+{#                Результаты: {{ question.results }}<br/>#}
+            </div>
+            {% if forloop.counter|divisibleby:2 %}
+                <hr class="myprint"/>
+            {% endif %}
         </div>
     {% endfor %}
     <br/>
     <br/>
 {#    {{ q.queries }}#}
+</div>
 </body>
 </html>
