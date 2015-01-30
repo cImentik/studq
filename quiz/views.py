@@ -157,18 +157,17 @@ def reports(request):
     is_user = False
     if user.is_authenticated():
         is_user = True
-
+    staffs = Current.objects.values_list('staff__id', flat=True).distinct()
     unit_list = Unit.objects.all()
     staff_list = {}
-    query = Current.objects.select_related('staff')
     for unit in unit_list:
-        staff_list[unit.name] = Staff.objects.filter(unit_id=unit.id).order_by("name")
+        staff_list[unit.name] = Staff.objects.filter(unit_id=unit.id, pk__in=staffs).order_by("name")
     content = {
         'staff_list': staff_list,
         'is_user': is_user,
         'q': connection.queries,
-        'query': query,
-        }
+        'staffs': staffs,
+    }
     return render_to_response('quiz/reports.html', content)
 
 
@@ -195,7 +194,7 @@ def report(request, staff_id):
             'mean': mean(results),
             'std': std(results),
             'median': median(results),
-            }
+        }
     content = {
         'staff_name': staff.name,
         'unit_name': staff.unit.name,

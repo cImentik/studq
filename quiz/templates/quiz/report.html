@@ -62,15 +62,15 @@
                     <table>
                     <tbody>
                         <tr>
-                            <td>Среднее зачение (вес)</td>
+                            <td>Среднее зачение</td>
                             <td>{{ question.mean }}</td>
                         </tr>
                         <tr>
-                            <td>СКО (вес)</td>
+                            <td>СКО</td>
                             <td>{{ question.std }}</td>
                         </tr>
                         <tr>
-                            <td>Медиана (вес)</td>
+                            <td>Медиана</td>
                             <td>{{ question.median}}</td>
                         </tr>
                     </tbody>
@@ -80,6 +80,8 @@
             </div>
             {% if forloop.counter|divisibleby:2 %}
                 <hr class="myprint"/>
+            {% else %}
+                <hr/>
             {% endif %}
         </div>
     {% endfor %}

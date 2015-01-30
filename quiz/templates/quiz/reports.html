@@ -1,6 +1,11 @@
 {% extends 'main.html' %}
 
 {% block quiz %}
+    <div class="row text-center">
+        <span class="custom">
+            <h4>Список преподователей у которых доступен отчёт</h4>
+        </span>
+    </div>
     <div class="row">
         <div class="large-10 large-offset-1 medium-10 medium-offset-1 small-10 small-offset-1 column">
             {% if staff_list %}
@@ -19,7 +24,7 @@
     </div>
 
 
-    {{ query }}
+    {{ staffs }}
 
 
 
