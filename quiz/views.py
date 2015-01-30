@@ -165,8 +165,6 @@ def reports(request):
     content = {
         'staff_list': staff_list,
         'is_user': is_user,
-        'q': connection.queries,
-        'staffs': staffs,
     }
     return render_to_response('quiz/reports.html', content)
 
