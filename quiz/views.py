@@ -1,21 +1,17 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render, get_object_or_404, redirect, render_to_response
-from django.http import HttpResponse, Http404
 from django.core.context_processors import csrf
-import json
 from django.db import connection
-from django.db.models import Avg, Max, Min, Count, Sum, QuerySet
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 
-from .forms import ContactForm, SimpleForm, CurrentForm
+from .forms import CurrentForm
 
 from .models import Unit, Staff, Question, Answer, Quiz, Current
 
-# Create your views here.
-
 
 def index(request):
+    """Главная страница - получение списка преподователей и кафедр"""
     unit_list = Unit.objects.order_by("name")
     staff_list = {}
     for unit in unit_list:
@@ -24,78 +20,8 @@ def index(request):
     return render(request, 'quiz/index.html', context)
 
 
-def forms(request, q_id):
-    q = get_object_or_404(Question, pk=q_id)
-    try:
-        # assert False
-        selected_choice = Answer.objects.get(pk=request.POST['choice'])
-    except (KeyError, Answer.DoesNotExist):
-        answers = Answer.objects.all()
-        args = {'question': q.content,
-                'answers': answers
-        }
-        return render(request, 'quiz/forms.html', args)
-    else:
-        answers = Answer.objects.all()
-        args = {'question': q.content,
-                'm': selected_choice,
-                'answers': answers
-        }
-        return render(request, 'quiz/forms.html', args)
-
-
-def form(request):
-    an = []
-    question = Question.objects.filter(pk=1)
-    answers = Answer.objects.all()
-    for ans in answers:
-        an.append((ans.id, ans.content))
-
-    if request.method == 'POST':
-        form = SimpleForm(request.POST, an=an, q=question.id)
-        if form.is_valid():
-            return render(request, 'quiz/form.html', {'form': form})
-    else:
-        form = SimpleForm({}, an=an, q=question[0])  # An unbound form
-    return render(request, 'quiz/form.html', {
-        'form': form,
-    })
-
-
-def jform(request):
-    if request.is_ajax():
-        message = 'Hello world!'
-    else:
-        message = 'Hello'
-    return HttpResponse(message)
-
-
-def ajax_test(request):
-    # context = {}
-    try:
-        data = request.POST['text'].strip()
-    except:
-        context = '{ "new-text": "error" }'
-    else:
-        context = json.dumps({"new-text": data[::-1]})
-    return HttpResponse(context)
-
-
-def ajax_test2(request):
-    # context = {}
-    #assert False
-    try:
-        d = json.loads(request.POST['form'])
-        data = request.POST['text'].strip()
-        #f = request.POST['form']
-    except:
-        context = '{ "new-text": "error" }'
-    else:
-        context = json.dumps({"new-text": data[::-1], "f": d})
-    return HttpResponse(context)
-
-
 def quiz(request, staff_id, question_id=1):
+    """Формирование опроса"""
     if not request.session.exists(request.session.session_key):
         request.session.create()
     s = request.session.session_key
@@ -146,6 +72,7 @@ def quiz(request, staff_id, question_id=1):
 
 
 def end(request):
+    """Разлогинить пользователя"""
     logout(request)
     response = redirect('/')
     return response
@@ -153,6 +80,7 @@ def end(request):
 
 @login_required
 def reports(request):
+    """Список преподователей с доступными отчётами"""
     user = request.user
     is_user = False
     if user.is_authenticated():
@@ -171,13 +99,12 @@ def reports(request):
 
 @login_required
 def report(request, staff_id):
+    """Формирование отчёта - печать итоговой формы отчёта"""
     staff = get_object_or_404(Staff, pk=staff_id)
     questions = Question.objects.all().values('id', 'content')
     answer_weights = Answer.objects.all().values_list('weight', flat=True)
-    #query = Answer.objects.all()
     data = {}
     q = connection
-    question_result = {}
     for question in questions:
         results = Current.objects.filter(question_id=question['id'], staff_id=staff_id).values_list \
             ('answer__weight', flat=True).order_by('answer__weight')
@@ -196,8 +123,6 @@ def report(request, staff_id):
     content = {
         'staff_name': staff.name,
         'unit_name': staff.unit.name,
-        #'query': query.query,
-        #'res': results,
         'data': data,
         'q': q,
     }

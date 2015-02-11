@@ -38,8 +38,6 @@
                         var y = [{%for y in question.yaxis %} {{ y }}, {% endfor %}];
                         var ticks = [{%for t in question.xaxis %} {{ t }}, {% endfor %}];
                         plot1 = $.jqplot('chart{{ key }}', [y], {
-                            // Only animate if we're not using excanvas (not in IE 7 or IE 8)..
-{#                            animate: !$.jqplot.use_excanvas,#}
                             seriesDefaults:{
                                 renderer:$.jqplot.BarRenderer
                             },
@@ -51,10 +49,6 @@
                             }
                         });
                     });</script>
-{#                {{ question.frequency }}<br/>#}
-{#                {{ question.xaxis }}<br/>#}
-{#                {{ question.yaxis }}<br/>#}
-
             </div>
             <div class="large-6 medium-5 small-6 column text-center">
                 <br/>
@@ -76,7 +70,6 @@
                     </tbody>
                     </table>
                 </div>
-{#                Результаты: {{ question.results }}<br/>#}
             </div>
             {% if forloop.counter|divisibleby:2 %}
                 <hr class="myprint"/>
@@ -87,7 +80,6 @@
     {% endfor %}
     <br/>
     <br/>
-{#    {{ q.queries }}#}
 </div>
 </body>
 </html>
