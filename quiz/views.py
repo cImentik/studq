@@ -67,6 +67,8 @@ def quiz(request, staff_id, question_id=1):
     content['questions'] = questions_ids
     content['currents_ids'] = currents_ids
     content['end'] = end
+    content['c_all'] = Question.objects.count()
+    content['c_q'] = question_id
 
     return render_to_response('quiz/mform.html', content)
 

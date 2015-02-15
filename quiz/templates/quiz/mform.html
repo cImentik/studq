@@ -18,6 +18,7 @@
             </div>
         </div>
     {% endif %}
+    <span>Вопрос: {{ c_q }} из {{ c_all }}</span>
     <form id="quiz" action="" method="post">
     {% csrf_token %}
         {% for field in mform %}
