@@ -24,7 +24,9 @@
         {% for field in mform %}
             <h3 class="subheader text-center"> {{ field.label }} </h3>
             <br/>
-            <center>это качество проявляется:</center>
+            <div class="text-center">
+                <span>это качество проявляется:</span>
+            </div>
 {#            TODO: убрать быдлокод#}
             <div class="large-10 large-offset-1 medium-10 medium-offset-1 small-10 small-offset-1 columns">{{ field }}</div>
         {% endfor %}

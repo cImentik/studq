@@ -1,9 +1,15 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render, get_object_or_404, redirect, render_to_response
+from django.http import Http404
 from django.core.context_processors import csrf
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import connection
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
+
+from io import BytesIO
+from reportlab.pdfgen import canvas
+from django.http import HttpResponse
 
 from .forms import CurrentForm
 
@@ -20,12 +26,27 @@ def index(request):
     return render(request, 'quiz/index.html', context)
 
 
-def quiz(request, staff_id, question_id=1):
+def quiz(request, staff_id):
     """Формирование опроса"""
     if not request.session.exists(request.session.session_key):
         request.session.create()
+    if "question_id" not in request.session:
+        request.session["question_id"] = 1
+    if "staff_id" not in request.session:
+        request.session["staff_id"] = staff_id
+    else:
+        staff_id = request.session["staff_id"]
     s = request.session.session_key
-    staff = get_object_or_404(Staff, pk=staff_id)
+    question_id = request.session["question_id"]
+    try:
+        staff = Staff.objects.get(pk=staff_id, available=1)
+    except ObjectDoesNotExist:
+        if "question_id" in request.session:
+            del request.session["question_id"]
+        if "staff_id" in request.session:
+            del request.session["staff_id"]
+            raise Http404("Такого преподователя не существует или он не нуждается в тестировании...")
+    #staff = get_object_or_404(Staff, pk=staff_id, available=1)
     question = get_object_or_404(Question, pk=question_id)
     select_error = False
     end = False
@@ -44,18 +65,19 @@ def quiz(request, staff_id, question_id=1):
         if request.method == 'POST':
             mform = CurrentForm(request.POST, instance=current, qc=question.content)
             if mform.is_valid():
-                #если форма заполнена и корректна
+                # если форма заполнена и корректна
                 mform.save()
                 if (int(question_id) in questions_ids) and (len(questions_ids) > 1):
                     questions_ids = list(questions_ids)
                     questions_ids.remove(int(question_id))
-                return redirect('quiz', staff_id=staff_id, question_id=questions_ids[0])
+                request.session["question_id"] = questions_ids[0]
+                return redirect('quiz', staff_id=staff_id)
             else:
-                #если форма не заполнена или не корректна
+                # если форма не заполнена или не корректна
                 select_error = True
         else:
             mform = CurrentForm(instance=current, qc=question.content)
-        #assert False
+            # assert False
     else:
         mform = None
         end = True
@@ -152,29 +174,54 @@ def mean(answers):
     if len(answers) < 1:
         result = 0
     else:
-        result = round(sum(answers)/len(answers), 2)
+        result = round(sum(answers) / len(answers), 2)
     return result
 
 
 def std(answers):
     """Вычисление среднеквадратичного отклонения"""
     m = mean(answers)
-    numerator = sum((x-m)**2 for x in answers)
+    numerator = sum((x - m) ** 2 for x in answers)
     l = len(answers)
     if l < 2:
         results = 0
     else:
-        results = numerator/l
-        results = round((results**0.5), 2)
+        results = numerator / l
+        results = round((results ** 0.5), 2)
     return results
 
 
 def median(answers):
     """Вычисление медианы"""
     lenght = len(answers)
-    index = ((lenght-1) // 2)
+    index = ((lenght - 1) // 2)
     if lenght % 2 == 0:
-        result = (answers[index]+answers[index+1])/2.0
+        result = (answers[index] + answers[index + 1]) / 2.0
     else:
         result = answers[index]
-    return  result
+    return result
+
+
+    # def dopdf(request):
+    # # Create the HttpResponse object with the appropriate PDF headers.
+    #     response = HttpResponse(content_type='application/pdf')
+    #     response['Content-Disposition'] = 'attachment; filename="somefilename.pdf"'
+    #
+    #     buffer = BytesIO()
+    #
+    #     # Create the PDF object, using the BytesIO object as its "file."
+    #     p = canvas.Canvas(buffer)
+    #
+    #     # Draw things on the PDF. Here's where the PDF generation happens.
+    #     # See the ReportLab documentation for the full list of functionality.
+    #     p.drawString(5, 500, "Hello world.")
+    #
+    #     # Close the PDF object cleanly.
+    #     p.showPage()
+    #     p.save()
+    #
+    #     # Get the value of the BytesIO buffer and write it to the response.
+    #     pdf = buffer.getvalue()
+    #     buffer.close()
+    #     response.write(pdf)
+    #     return response
