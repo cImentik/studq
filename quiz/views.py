@@ -7,9 +7,9 @@ from django.db import connection
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 
-from io import BytesIO
-from reportlab.pdfgen import canvas
-from django.http import HttpResponse
+# from io import BytesIO
+# from reportlab.pdfgen import canvas
+# from django.http import HttpResponse
 
 from .forms import CurrentForm
 
