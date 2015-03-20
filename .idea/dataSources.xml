@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="1961322687">
+  <component name="DataSourceManagerImpl" format="xml" hash="2061227134">
     <data-source source="LOCAL" name="db" uuid="b0bbe097-5929-46f5-b064-fd993bef8c57">
       <driver-ref>sqlite.xerial</driver-ref>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
@@ -10,7 +10,9 @@
     <data-source source="LOCAL" name="Django default" uuid="abb85110-46a5-4e0a-b19f-b75c95019344">
       <driver-ref>sqlite.xerial</driver-ref>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/db.sqlite3</jdbc-url>
+      <jdbc-url>jdbc:postgresql://172.22.70.55:5432/studq</jdbc-url>
+      <user-name>django</user-name>
+      <user-password>dfcedfc0dfcbdfc4dfcddfc5</user-password>
       <libraries />
     </data-source>
     <data-source source="LOCAL" name="PostgreSQL - studq@localhost" uuid="8e0f105c-3775-4a3d-87bd-3d64c287bca9">
@@ -22,6 +24,15 @@
       <user-password>dfcedfc0dfcbdfc4dfcddfc5</user-password>
       <schema-pattern>studq.pg_catalog studq.public</schema-pattern>
       <default-schemas>studq.pg_catalog studq.public</default-schemas>
+      <libraries />
+    </data-source>
+    <data-source source="LOCAL" name="PostgreSQL - studq@172.22.70.55" uuid="53d98e44-a044-4a89-ad1b-e69ddb8f098d">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://172.22.70.55:5432/studq</jdbc-url>
+      <user-name>django</user-name>
+      <user-password>dfcedfc0dfcbdfc4dfcddfc5</user-password>
       <libraries />
     </data-source>
   </component>
