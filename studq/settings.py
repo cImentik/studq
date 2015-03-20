@@ -24,7 +24,7 @@ SECRET_KEY = ')k&ueoyj$@qa-mle=&25))!=9u9qkahb^dad2ileac-evtx#7s'
 if socket.gethostname() == 'devubuntu':
     DEBUG = False
     TEMPLATE_DEBUG = False
-    ALLOWED_HOSTS = ['172.22.70.55']
+    ALLOWED_HOSTS = ['tes.krsk.irgups.ru']
 else:
     DEBUG = True
     TEMPLATE_DEBUG = True
