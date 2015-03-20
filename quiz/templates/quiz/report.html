@@ -29,7 +29,7 @@
 </div>
 <div class="row">
     {% for key, question in data.items %}
-        <div class="row text-center">Впрос №{{ key }}: {{ question.content }}</div>
+        <div class="row text-center">Вопрос №{{ key }}: {{ question.content }}</div>
         <br/>
         <div class="row">
             <div id="chart{{ key }}" class="large-6 medium-5 small-6 column">
@@ -56,7 +56,7 @@
                     <table>
                     <tbody>
                         <tr>
-                            <td>Среднее зачение</td>
+                            <td>Среднее значение</td>
                             <td>{{ question.mean }}</td>
                         </tr>
                         <tr>
