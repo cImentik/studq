@@ -3,7 +3,7 @@
 {% block quiz %}
 {% if staff_list %}
     {% for unit, staff_l in staff_list.items %}
-        {{ unit }}
+        Кафедра: {{ unit }}
         <ul class="side-nav">
         {% for staff in staff_l %}
             {% if staff.available %}

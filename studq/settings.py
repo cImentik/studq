@@ -10,6 +10,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import socket
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
@@ -20,16 +21,19 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = ')k&ueoyj$@qa-mle=&25))!=9u9qkahb^dad2ileac-evtx#7s'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-TEMPLATE_DEBUG = True
+if socket.gethostname() == 'devubuntu':
+    DEBUG = False
+    TEMPLATE_DEBUG = False
+    ALLOWED_HOSTS = ['172.22.70.55']
+else:
+    DEBUG = True
+    TEMPLATE_DEBUG = True
+    ALLOWED_HOSTS = []
 
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'templates/'),
 #    os.path.join(BASE_DIR, 'quiz/templates/'),
 )
-
-ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -42,7 +46,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'quiz',
-    #'googlecharts',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -63,9 +66,17 @@ WSGI_APPLICATION = 'studq.wsgi.application'
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    # }
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2", # Add "postgresql_psycopg2", "postgresql", "mysql", "sqlite3" or "oracle".
+        "NAME": "studq",
+        "USER": "django",
+        "PASSWORD": "django",
+        "HOST": "172.22.70.55",
+        "PORT": "5432",
     }
 }
 
