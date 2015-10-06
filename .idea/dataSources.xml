@@ -10,18 +10,22 @@
     <data-source source="LOCAL" name="Django default" uuid="abb85110-46a5-4e0a-b19f-b75c95019344">
       <driver-ref>sqlite.xerial</driver-ref>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/db.sqlite3</jdbc-url>
-      <libraries />
+      <jdbc-url>jdbc:postgresql://172.22.70.55:5432/studq</jdbc-url>
+      <libraries>
+        <library>
+          <url>file://$USER_HOME$/.PyCharm30/config/jdbc-drivers/postgresql-driver-license.txt</url>
+        </library>
+        <library>
+          <url>file://$USER_HOME$/.PyCharm30/config/jdbc-drivers/postgresql-9.3-1100.jdbc4.jar</url>
+        </library>
+      </libraries>
     </data-source>
     <data-source source="LOCAL" name="PostgreSQL - studq@172.22.70.55" uuid="53d98e44-a044-4a89-ad1b-e69ddb8f098d">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://172.22.70.55:5432/studq</jdbc-url>
-      <user-name>django</user-name>
-      <user-password>dfcedfc0dfcbdfc4dfcddfc5</user-password>
       <libraries />
     </data-source>
   </component>
 </project>
-
